@@ -112,6 +112,7 @@ public class LoginController {
     @GetMapping("/user")
     public String user (@AuthenticationPrincipal PrincipalDetails principalDetails) {
         System.out.println("principalDetails.getUser() = " + principalDetails.getUser());
+        //UserEntity(id=6, username=google_113341760605204311861, password=HealthKeeper, email=jisunalazzang@gmail.com, phone=null, role=ROLE_USER, provider=google, providerId=113341760605204311861, createDate=2024-03-02 22:51:03.851916)
         return "/user";
     }
 
