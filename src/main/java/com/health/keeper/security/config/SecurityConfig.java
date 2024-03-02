@@ -1,5 +1,7 @@
 package com.health.keeper.security.config;
 
+import com.health.keeper.security.auth.oauth.PrincipalOauth2UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,6 +18,10 @@ public class SecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+    @Autowired
+    PrincipalOauth2UserService principalOauth2UserService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -45,7 +51,11 @@ public class SecurityConfig {
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false));//다중 로그인시 기존계정 로그아웃
 
-
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .loginPage("/loginForm")
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(principalOauth2UserService)));
 
         return http.build();
     }

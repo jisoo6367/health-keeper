@@ -27,7 +27,21 @@ public class UserEntity {
     private String phone;
     private String role;
 
+    private String provider;
+    private String providerId;
+
     @CreationTimestamp
     private Timestamp createDate;
 
+    @Builder
+    public UserEntity(String username, String password, String email, String phone, String role, String provider, String providerId, Timestamp createDate) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
+        this.createDate = createDate;
+    }
 }
