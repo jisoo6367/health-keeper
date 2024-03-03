@@ -5,6 +5,7 @@ import com.health.keeper.repository.UserRepository;
 import com.health.keeper.security.auth.PrincipalDetails;
 import com.health.keeper.security.auth.oauth.provider.FacebookUserInfo;
 import com.health.keeper.security.auth.oauth.provider.GoogleUserInfo;
+import com.health.keeper.security.auth.oauth.provider.NaverUserInfo;
 import com.health.keeper.security.auth.oauth.provider.OAuth2UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +14,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
@@ -42,6 +45,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             oAuth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
         }else if(userRequest.getClientRegistration().getRegistrationId().equals("facebook")){
             oAuth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
+        }else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")){
+            oAuth2UserInfo = new NaverUserInfo((Map) oauth2User.getAttributes().get("response"));
+            //naver는 {resultcode=00, message=success, response{id=14113, email=@@, name=jisoo}
+            //한번더 감싸져있기때문에 Map타입의 결과에서 response 키 값을 꺼내와야함
         }else{
             System.out.println("구글/페이스북 외 소셜 로그인 요청");
         }
