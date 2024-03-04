@@ -42,6 +42,7 @@ public class BoardService {
         boardRepository.updateHits(id);
     }
 
+
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if(optionalBoardEntity.isPresent()){ //있으면
@@ -51,5 +52,16 @@ public class BoardService {
         }else {
             return null;
         }
+    }
+
+    public BoardDTO update(BoardDTO boardDTO) {
+        BoardEntity boardEntity = BoardEntity.touUpdateEntity(boardDTO);
+        boardRepository.save(boardEntity);
+        //save메서드가 insert와 update를 다 해줌. id값이 있냐없냐의 차이
+        return findById(boardDTO.getId());
+    }
+
+    public void delete(Long id) {
+        boardRepository.deleteById(id);
     }
 }
