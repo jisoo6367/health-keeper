@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -26,11 +27,6 @@ public class LoginController {
 
     @Autowired
     UserRepository userRepository;
-
-    @GetMapping("/")
-    public String index(){
-        return "/index";
-    }
 
     @GetMapping("/loginForm")
     public String loginF(){
@@ -110,9 +106,12 @@ public class LoginController {
 
 
     @GetMapping("/user")
-    public String user (@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String user (@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         System.out.println("principalDetails.getUser() = " + principalDetails.getUser());
         //UserEntity(id=6, username=google_113341760605204311861, password=HealthKeeper, email=jisunalazzang@gmail.com, phone=null, role=ROLE_USER, provider=google, providerId=113341760605204311861, createDate=2024-03-02 22:51:03.851916)
+
+        model.addAttribute("info", principalDetails.getUser());
+
         return "/user";
     }
 

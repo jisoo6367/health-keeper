@@ -5,6 +5,21 @@
     <title>Index</title>
 </head>
 <body>
-<h1>인덱스 페이지</h1>
+    <h1>인덱스 페이지</h1>
+    <button onclick="saveReq()">글 작성</button>
+    <button onclick="listReq()">글 목록</button>
 </body>
+<script>
+<!--    function saveReq() {-->
+<!--    }-->
+
+    const saveReq = () => {
+        location.href = "/board/save";
+    }
+
+    const listReq = () => {
+        location.href = "/board/";
+    }
+
+</script>
 </html>
