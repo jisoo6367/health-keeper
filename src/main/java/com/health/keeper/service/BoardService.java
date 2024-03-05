@@ -5,6 +5,10 @@ import com.health.keeper.entity.BoardEntity;
 import com.health.keeper.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -63,5 +67,31 @@ public class BoardService {
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    public Page<BoardDTO> paging(Pageable pageable) {
+
+        int page = pageable.getPageNumber() -1;
+        int pageLimit = 3; // 한 페이지당 게시글 수
+
+        Page<BoardEntity> boardEntities =
+                boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC,"id")));
+        // page 위치에 있는 값은 DB 기준 0부터 시작
+        // Sort.by의 마지막 properties는 엔티티 컬럼 기준임. DB 컬럼 이름 X
+
+        System.out.println(".getContent() = " + boardEntities.getContent());// 요청페이지에 해당하는 글
+        System.out.println(".getTotalElements() = " + boardEntities.getTotalElements());// 전체 글 갯수
+        System.out.println(".getNumber = " + boardEntities.getNumber());// DB로 요청한 페이지 번호 (1이면 0)
+        System.out.println(".getTotalPages() = " + boardEntities.getTotalPages());// 전체 페이지 갯수
+        System.out.println(".getSize() = " + boardEntities.getSize());// 한 페이지에 보여지는 글 갯수
+        System.out.println(".hasPrevious() = " + boardEntities.hasPrevious());// 이전 페이지 존재 여부 (t/f)
+        System.out.println(".isFirst() = " + boardEntities.isFirst());// 첫 페이지 여부 (t/f)
+        System.out.println(".isLast() = " + boardEntities.isLast());// 마지막 페이지 여부 (t/f)
+
+        //목록: id, writer, title, hits, createdTime
+        Page<BoardDTO> boardDTOS =
+                boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
+        // Page 인터페이스에서 제공해주는 map 메서드를 이용하여 Entity를 DTO 객체로 바꿔줌
+        return boardDTOS;
     }
 }
