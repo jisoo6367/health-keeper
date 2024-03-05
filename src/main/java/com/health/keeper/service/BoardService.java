@@ -2,6 +2,8 @@ package com.health.keeper.service;
 
 import com.health.keeper.dto.BoardDTO;
 import com.health.keeper.entity.BoardEntity;
+import com.health.keeper.entity.BoardFileEntity;
+import com.health.keeper.repository.BoardFileRepository;
 import com.health.keeper.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +27,43 @@ public class BoardService {
     //생성자 주입
     private final BoardRepository boardRepository;
 
-    public void save(BoardDTO boardDTO) {
-        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-        boardRepository.save(boardEntity); //save 메서드는 매개변수로 Entity를 줘야하고, 리턴도 Entity 타입으로 된다.
+    private final BoardFileRepository boardFileRepository;
+
+    public void save(BoardDTO boardDTO) throws IOException {
+
+        // 파일 첨부 여부에 따라 로직 분리해야함
+        if(boardDTO.getBoardFile().isEmpty()){ // 첨부 파일 없을 때
+            BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+            boardRepository.save(boardEntity); //save 메서드는 매개변수로 Entity를 줘야하고, 리턴도 Entity 타입으로 된다.
+        }else{ // 첨부 파일 있을 때
+            /*
+                1. DTO에 담긴 파일을 꺼냄
+                2. 파일의 이름을 가져옴
+                3. 서버 저장용 이름을 만듦
+                4. 저장 경로 설정
+                5. 경로에 파일 저장
+                6. board_table에 게시글 데이터 save 처리
+                7. board_file_table에 첨부파일 데이터 save 처리
+            */
+            MultipartFile boardFile = boardDTO.getBoardFile(); // 1
+            String originalFilename = boardFile.getOriginalFilename(); // 2
+            String storedFileName = System.currentTimeMillis()+ "_" + originalFilename; // 3
+            String savePath = "C:/springboot_img/" + storedFileName; // 4
+            boardFile.transferTo(new File(savePath)); // 5 파일 저장까지만 완료
+            //add exception처리하면 컨트롤러의 save도 빨간줄 동일처리해줘야함
+
+            BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
+            //DB에 저장하기 전이라서 boardEntity에는 Id 값이 없음
+            Long saveId = boardRepository.save(boardEntity).getId();
+            BoardEntity board = boardRepository.findById(saveId).get();
+
+            // 파일 엔티티로 변환하기 위한 작업
+            BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+            boardFileRepository.save(boardFileEntity);
+
+        }
+
+
         //그래서 서비스에서는 결국 DTO -> Entity 변환 또는 Entity -> DTO변환을 해야하게됨
     }
 
