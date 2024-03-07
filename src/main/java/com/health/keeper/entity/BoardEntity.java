@@ -43,6 +43,8 @@ public class BoardEntity extends BaseEntity{
     //cascade = CascadeType.REMOVE, orphanRemoval = true 이 두가지가 on delete cascade 속성 부여
     private List<BoardFileEntity> boardFileEntityList = new ArrayList<>(); //하나의 게시물에 여러개의 첨부파일 가능
 
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList = new ArrayList<>();
 
     // DTO -> Entity 변환작업
     public static BoardEntity toSaveEntity(BoardDTO boardDTO){

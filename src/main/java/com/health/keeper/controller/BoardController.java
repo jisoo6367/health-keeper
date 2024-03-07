@@ -1,7 +1,10 @@
 package com.health.keeper.controller;
 
 import com.health.keeper.dto.BoardDTO;
+import com.health.keeper.dto.CommentDTO;
+import com.health.keeper.entity.CommentEntity;
 import com.health.keeper.service.BoardService;
+import com.health.keeper.service.CommentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import java.util.List;
 public class BoardController {
     //생성자 주입
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/save")
     public String saveForm(){
@@ -49,6 +53,11 @@ public class BoardController {
         // 해당 게시글의 조회수를 하나 올린 후에 게시글 데이터를 가져와서 detail.html에 출력해야함
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+
+        // + 댓글 목록 가져오기
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("commentList", commentDTOList);
+
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
 
