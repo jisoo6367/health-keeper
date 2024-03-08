@@ -67,8 +67,12 @@ public class BoardService {
             // 다중 파일 업로드로 바꾸면서 부모데이터가 먼저 저장이 되어야 해서 순서가 바뀌게됨
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
             //DB에 저장하기 전이라서 boardEntity에는 Id 값이 없음
-            Long saveId = boardRepository.save(boardEntity).getId();
+            Long saveId = boardRepository.save(boardEntity).getId(); //게시글의 번호
             BoardEntity board = boardRepository.findById(saveId).get();
+            System.out.println("=====그냥 findById(게시글번호) : "+ boardRepository.findById(saveId));
+            //Optional[com.health.keeper.entity.BoardEntity@782dd072]
+            System.out.println("=====거기에 .get() : " + board);
+            //com.health.keeper.entity.BoardEntity@3eb2fc9e
 
             for(MultipartFile boardFile: boardDTO.getBoardFile()) { // 1
                 String originalFilename = boardFile.getOriginalFilename(); // 2

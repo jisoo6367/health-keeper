@@ -10,4 +10,34 @@ public class HomeController {
     public String index(){
         return "/index";
     }
+
+    @GetMapping("/about")
+    public String about(){
+        return "/about";
+    }
+
+    @GetMapping("/contact")
+    public String contact(){
+        return "/contact";
+    }
+
+    @GetMapping("/index2")
+    public String index2(){
+        return "/index2";
+    }
+
+    @GetMapping("/services")
+    public String services(){
+        return "/services";
+    }
+
+    @GetMapping("/works")
+    public String works(){
+        return "/works";
+    }
+
+    @GetMapping("/works_single")
+    public String works_single(){
+        return "/worksSingle";
+    }
 }
