@@ -3,16 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Save</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/css/search-bar.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
 </head>
 <body>
-<form action="/board/save" method="post" enctype="multipart/form-data">
-    writer: <input type="text" name="boardWriter"><br>
-    pass: <input type="text" name="boardPass"><br>
-    title: <input type="text" name="boardTitle"><br>
-    contents: <textarea name="boardContents" cols="30" rows="10"></textarea><br>
-    file: <input type="file" name="boardFile" multiple><br>
-    <input type="submit" value="글 작성">
+<h2>게시글 작성</h2>
+<div class="container">
 
-</form>
+    <form role="form" action="/board/save" method="post" enctype="multipart/form-data">
+        writer: <input type="text" name="boardWriter"><br>
+        pass: <input type="text" name="boardPass"><br>
+        title: <input type="text" name="boardTitle"><br>
+        contents: <textarea name="boardContents" cols="30" rows="10"></textarea><br>
+        file: <input type="file" name="boardFile" multiple><br>
+        <button type="submit" class="btn btn-primary me-md-2">등록</button>
+        <button type="button" class="btn btn-secondary me-md-2" onclick="listReq()">취소</button>
+    </form>
+
+    <div class="row g-6 align-items-center">
+        <div class="col-auto">
+            <label class="col-form-label">작성자 : </label>
+        </div>
+        <div class="col-auto">
+            <input type="text" class="form-control" name="boardWriter">
+        </div>
+
+        <div class="col-auto">
+            <label class="col-form-label">비밀번호 : </label>
+        </div>
+        <div class="col-auto">
+            <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        </div><br>
+
+        <div class="col-auto">
+            <label class="col-form-label">제목 : </label>
+        </div>
+        <div class="col-auto">
+            <input type="text" class="form-control" name="boardTitle">
+        </div><br>
+
+        <div class="col-auto">
+            <label class="col-form-label">내용 : </label>
+        </div>
+        <div class="col-auto">
+            <textarea class="form-control" name="boardContents" cols="30" rows="10"></textarea>
+        </div><br>
+
+        <div class="col-auto">
+            <label class="col-form-label">첨부파일 : </label>
+        </div>
+        <div class="col-auto">
+            <input type="file" name="boardFile" multiple>
+        </div><br>
+
+    </div>
+</div>
+
+
+
+</div>
+
+
 </body>
+<script th:inline="javascript">
+
+    const listReq = () => {
+         var pageData = localStorage.getItem('page')
+        location.href = "/board/paging?page="+ pageData;
+    }
+
+
+
+</script>
 </html>

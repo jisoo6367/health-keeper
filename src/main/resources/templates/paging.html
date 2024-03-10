@@ -5,6 +5,8 @@
     <title>Paging</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/css/search-bar.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
 </head>
 <body>
@@ -54,11 +56,11 @@
 
 <table class="table table-hover">
     <tr>
-        <th>id</th>
-        <th>title</th>
-        <th>writer</th>
-        <th>date</th>
-        <th>hits</th>
+        <th>NO</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성날짜</th>
+        <th>조회수</th>
     </tr>
     <tr th:each="board: ${boardList}">
         <td th:text="${board.id}"></td>
@@ -109,9 +111,12 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javasript" src="/assets/js/bootstrap.js"></script>
-<script>
+<script th:inline="javascript">
     const saveReq = () => {
-    location.href = "/board/save";
+        const page = [[${boardList.number +1}]];
+        console.log(page);
+        localStorage.setItem('page','[[${boardList.number +1}]]');
+        location.href = "/board/save";
     }
 </script>
 </html>
