@@ -7,6 +7,10 @@ server:
       enabled: true
       force: true
 
+imgbb:
+  api:
+    key: "https://api.imgbb.com/1/upload"
+
 spring:
   main:
     allow-circular-references: true
