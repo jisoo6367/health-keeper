@@ -29,17 +29,23 @@ public class BoardController {
     private final CommentService commentService;
     private final FileUploadService fileUploadService;
 
+    @GetMapping("/board")
+    public String showBoard() {
+        return "board";
+    }
+
     @GetMapping("/save")
     public String saveForm(){
         return "save";
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO, MultipartFile boardFile) throws IOException {
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
+    //public String save(@ModelAttribute BoardDTO boardDTO, @RequestParam("boardFile")MultipartFile boardFile) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
         boardService.save(boardDTO);
-        fileUploadService.uploadImageToImgBB(boardFile);
-        return "index";
+        //fileUploadService.uploadImageToImgBB(boardFile);
+        return "redirect:/board/paging";
     }
 
     @GetMapping("/")
@@ -88,7 +94,7 @@ public class BoardController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id){
         boardService.delete(id);
-        return "redirect:/board/";
+        return "redirect:/board/paging";
     }
 
     // /board/paging?page=1

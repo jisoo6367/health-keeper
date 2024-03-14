@@ -9,7 +9,11 @@ server:
 
 imgbb:
   api:
-    key: "https://api.imgbb.com/1/upload"
+    key: d9680de93bbf1df4d5137d14cb20250e
+
+multipart:
+  file:
+    location: C:/Users/jisoo/AppData/Local/Temp
 
 spring:
   main:

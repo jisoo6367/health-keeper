@@ -9,13 +9,17 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
 public class FileUploadService {
 
     @Value("${imgbb.api.key}") // application.properties 또는 application.yml에서 API 키를 관리할 수 있도록 설정
-    private String apiKey;
+    private String apiKey ;
 
     private final RestTemplate restTemplate;
 
@@ -24,20 +28,34 @@ public class FileUploadService {
     }
 
     public String uploadImageToImgBB(MultipartFile file) throws IOException {
-        // 업로드할 파일의 바이트 배열을 생성
-        byte[] fileContent = file.getBytes();
 
-        // 파일 이름 가져오기
-        String fileName = file.getOriginalFilename();
+        // 임시 파일 생성
+        File tempFile = File.createTempFile("temp", null);
+        // 임시 파일로 MultipartFile의 내용을 복사
+        file.transferTo(tempFile);
+
+//        // 파일을 임시 디렉토리에 저장
+//        String tempDir = System.getProperty("java.io.tmpdir");
+//        String filePath = tempDir + File.separator + file.getOriginalFilename();
+//        file.transferTo(new File(filePath));
+
+//        // 업로드할 파일의 바이트 배열을 생성
+//        byte[] fileContent = file.getBytes();
+//
+//        // 파일 이름 가져오기
+//        String fileName = file.getOriginalFilename();
 
         // ImgBB 업로드 API 엔드포인트 URL
         String apiUrl = "https://api.imgbb.com/1/upload";
 
         // 업로드할 파일을 ByteArrayResource로 변환
+        //byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+        byte[] fileContent = Files.readAllBytes(tempFile.toPath());
         Resource fileAsResource = new ByteArrayResource(fileContent) {
             @Override
             public String getFilename() {
-                return fileName;
+                return file.getOriginalFilename();
+                //return fileName;
             }
         };
 
@@ -57,8 +75,7 @@ public class FileUploadService {
         // 업로드 결과 확인
         if (response.getStatusCode() == HttpStatus.OK) {
             // API가 제공하는 이미지 URL 가져오기
-            String imageUrl = response.getBody();
-            return imageUrl;
+            return response.getBody();
         } else {
             // 업로드 실패 시 예외 처리
             throw new RuntimeException("Image upload failed with status code: " + response.getStatusCode());
