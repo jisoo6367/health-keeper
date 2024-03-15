@@ -11,10 +11,6 @@ imgbb:
   api:
     key: d9680de93bbf1df4d5137d14cb20250e
 
-multipart:
-  file:
-    location: C:/Users/jisoo/AppData/Local/Temp
-
 spring:
   main:
     allow-circular-references: true

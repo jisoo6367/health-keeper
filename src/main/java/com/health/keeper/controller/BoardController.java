@@ -40,11 +40,13 @@ public class BoardController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
-    //public String save(@ModelAttribute BoardDTO boardDTO, @RequestParam("boardFile")MultipartFile boardFile) throws IOException {
+    //public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
+    public String save(@ModelAttribute BoardDTO boardDTO, @RequestPart("boardFile")MultipartFile image) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
         boardService.save(boardDTO);
+        System.out.println("save메서드 끗, uploadImage메서드 시작");
         //fileUploadService.uploadImageToImgBB(boardFile);
+        fileUploadService.uploadImage(image);
         return "redirect:/board/paging";
     }
 

@@ -12,4 +12,10 @@ public class MenuController {
     public String showMenuManagement(){
         return "menuManagement";
     }
+
+    @GetMapping("/register")
+    public String registerForm(){
+        return "menuRegister";
+    }
+
 }

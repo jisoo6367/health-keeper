@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <title>식단 관리</title>
 </head>
 <body>
@@ -15,6 +16,14 @@
     </tr>
 </table>
 
-<button type="button" class="btn btn-outline-primary me-md-2" onclick="saveReq()">식단 등록</button>
+<button type="button" class="btn btn-outline-primary me-md-2" onclick="registerReq()">식단 등록</button>
 </body>
+
+<script th:inline="javascript">
+
+    const registerReq = () => {
+        location.href = "/menu/register";
+    }
+
+</script>
 </html>

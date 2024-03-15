@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Save</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/css/search-bar.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+</head>
+<body>
+<h2>식단 등록</h2>
+
+
+</body>
+<script th:inline="javascript">
+
+    const listReq = () => {
+         var pageData = localStorage.getItem('page')
+        location.href = "/board/paging?page="+ pageData;
+    }
+
+
+
+</script>
+</html>
