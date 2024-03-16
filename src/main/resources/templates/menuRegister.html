@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Save</title>
@@ -10,17 +10,33 @@
 
 </head>
 <body>
-<h2>식단 등록</h2>
+<h2>식단 관리 등록하는 페이지</h2>
+<form role="form" action="/menu/save" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="menuWriter" ><br>
+    <label>사진 첨부 : </label><input type="file" name="menuFile" formenctype="multipart/form-data"><br>
+    <label>식단 구분 : </label>
+    <select name="menuCategory">
+        <option value="breakfast">아침</option>
+        <option value="lunch">점심</option>
+        <option value="dinner">저녁</option>
+        <option value="snack">간식</option>
+    </select><br>
+    <label>코멘트 : </label> <input type="text" name="menuComment"><br>
+    <button type="submit" class="btn btn-primary me-md-2">등록</button>
+    <button type="button" class="btn btn-secondary me-md-2" onclick="listReq()">취소</button>
+</form>
+
 
 
 </body>
 <script th:inline="javascript">
 
     const listReq = () => {
-         var pageData = localStorage.getItem('page')
-        location.href = "/board/paging?page="+ pageData;
+        location.href = "/menu/list";
     }
 
+    const menuWriter = [[${username}]];
+    console.log(menuWriter);
 
 
 </script>
