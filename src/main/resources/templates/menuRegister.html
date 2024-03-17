@@ -12,7 +12,7 @@
 <body>
 <h2>식단 관리 등록하는 페이지</h2>
 <form role="form" action="/menu/save" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="menuWriter" ><br>
+    <input type="hidden" name="menuWriter" th:value="${username}"><br>
     <label>사진 첨부 : </label><input type="file" name="menuFile" formenctype="multipart/form-data"><br>
     <label>식단 구분 : </label>
     <select name="menuCategory">

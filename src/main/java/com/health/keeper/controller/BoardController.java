@@ -44,7 +44,6 @@ public class BoardController {
     public String save(@ModelAttribute BoardDTO boardDTO, @RequestPart("boardFile")MultipartFile image) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
         boardService.save(boardDTO);
-        System.out.println("save메서드 끗, uploadImage메서드 시작");
         //fileUploadService.uploadImageToImgBB(boardFile);
         fileUploadService.uploadImage(image);
         return "redirect:/board/paging";
