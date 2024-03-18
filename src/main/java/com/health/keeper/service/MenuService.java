@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,17 +38,44 @@ public class MenuService {
     //서비스에서는 결국 DTO -> Entity 변환 또는 Entity -> DTO변환을 해야하게됨
     public void save(MenuDTO menuDTO) throws IOException {
 
+            if(menuDTO.getMenuFile().isEmpty()){
+                MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
+                menuRepository.save(menuEntity);
+            } else{
 
-            MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
-            menuRepository.save(menuEntity); //save 메서드는 매개변수로 Entity를 줘야하고, 리턴도 Entity 타입으로 된다.
+                MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
+                //메뉴테이블에 올리고 게시글의 번호 가져오기
+                Long saveId = menuRepository.save(menuEntity).getId();
+                MenuEntity menu = menuRepository.findById(saveId).get();
+                System.out.println("findById(게시글번호) = " + menuRepository.findById(saveId));
+                System.out.println("거기에 .get() = " + menu);
+
+                for(MultipartFile menuFile : menuDTO.getMenuFile()){
+                    String originalFilename = menuFile.getOriginalFilename();
+                    String storedFileName = System.currentTimeMillis()+ "_" + originalFilename;
+                    String savePath = "C:/springboot_img/menu" + storedFileName;
+                    menuFile.transferTo(new File(savePath));
+
+                    MenuFileEntity menuFileEntity = MenuFileEntity.toMenuFileEntity(menu, originalFilename, storedFileName);
+                    menuFileRepository.save(menuFileEntity);
+                }
+            }
+
 
     }//save메서드-end
 
+    @Transactional
+    public List<MenuDTO> findAll() {
+        List<MenuEntity> menuEntityList = menuRepository.findAll();
 
+        System.out.println("서비스 findAll에서 메뉴엔티티리스트" + menuEntityList);
+        //Entity -> DTO
+        List<MenuDTO> menuDTOList = new ArrayList<>();
+        for(MenuEntity menuEntity: menuEntityList){
+            menuDTOList.add(MenuDTO.toMenuDTO(menuEntity));
+        }
 
-
-
-
-
+        return menuDTOList;
+    }
 
 }

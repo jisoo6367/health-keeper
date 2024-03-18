@@ -48,5 +48,17 @@ public class MenuEntity extends BaseEntity{
         return menuEntity;
     }
 
+    // DTO -> Entity (첨부파일 있는 경우)
+    public static MenuEntity toSaveFileEntity(MenuDTO menuDTO){
+        MenuEntity menuEntity = new MenuEntity();
+
+        menuEntity.setMenuCategory(menuDTO.getMenuCategory());
+        menuEntity.setMenuComment(menuDTO.getMenuComment());
+        menuEntity.setMenuWriter(menuDTO.getMenuWriter());
+        menuEntity.setFileAttached(1);
+
+        return menuEntity;
+    }
+
 
 }

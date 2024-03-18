@@ -2,6 +2,8 @@ package com.health.keeper.dto;
 
 import com.health.keeper.entity.BoardEntity;
 import com.health.keeper.entity.BoardFileEntity;
+import com.health.keeper.entity.MenuEntity;
+import com.health.keeper.entity.MenuFileEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +25,34 @@ public class MenuDTO {
     private List<String> originalFileName;
     private List<String> storedFileName; // 서버 저장용 파일 이름
     private int fileAttached; // 파일 첨부 여부 (첨부: 1 , 미첨부: 0)
+
+    // Entity -> DTO
+    public static MenuDTO toMenuDTO(MenuEntity menuEntity){
+        MenuDTO menuDTO = new MenuDTO();
+
+        menuDTO.setId(menuEntity.getId());
+        menuDTO.setMenuWriter(menuEntity.getMenuWriter());
+        menuDTO.setMenuComment(menuEntity.getMenuComment());
+        menuDTO.setMenuCategory(menuEntity.getMenuCategory());
+        menuDTO.setMenuCreatedTime(menuEntity.getCreatedTime());
+        menuDTO.setMenuUpdatedTime(menuEntity.getUpdatedTime());
+        //첨부파일
+        if(menuEntity.getFileAttached() == 0){
+            menuDTO.setFileAttached(menuEntity.getFileAttached());
+        }else{
+            List<String> originalFileNameList = new ArrayList<>();
+            List<String> storedFileNameList = new ArrayList<>();
+
+            menuDTO.setFileAttached(menuEntity.getFileAttached());
+            for(MenuFileEntity menuFileEntity: menuEntity.getMenuFileEntityList()){
+                originalFileNameList.add(menuFileEntity.getOriginalFileName());
+                storedFileNameList.add(menuFileEntity.getStoredFileName());
+            }
+            menuDTO.setOriginalFileName(originalFileNameList);
+            menuDTO.setStoredFileName(storedFileNameList);
+        }
+        return menuDTO;
+    }
 
 
 

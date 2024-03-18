@@ -1,5 +1,6 @@
 package com.health.keeper.entity;
 
+import com.health.keeper.dto.MenuDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,14 @@ public class MenuFileEntity extends BaseEntity{
     private MenuEntity menuEntity; // 반드시 부모 엔티티 타입으로 적어줘야함
 
 
+    public static MenuFileEntity toMenuFileEntity(MenuEntity menuEntity, String originalFileName, String storedFileName){
+        MenuFileEntity menuFileEntity = new MenuFileEntity();
+        System.out.println("변수확인 오리지널 : " + originalFileName );
+        System.out.println("변수확인 스토얼드 : " + storedFileName);
+        menuFileEntity.setOriginalFileName(originalFileName);
+        menuFileEntity.setStoredFileName(storedFileName);
+        menuFileEntity.setMenuEntity(menuEntity);
+
+        return menuFileEntity;
+    }
 }

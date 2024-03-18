@@ -52,6 +52,7 @@ public class BoardController {
     @GetMapping("/")
     public String findAll(Model model){
         List<BoardDTO> boardDTOList = boardService.findAll();
+        System.out.println("boardDTOList = " + boardDTOList);
         model.addAttribute("boardList", boardDTOList);
 
         return "list";
