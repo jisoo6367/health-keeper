@@ -10,10 +10,17 @@
 <table>
     <tr>
         <th>id</th>
-        <th>title</th>
         <th>writer</th>
-        <th>date</th>
-        <th>hits</th>
+        <th>comment</th>
+        <th>category</th>
+        <th>file</th>
+    </tr>
+    <tr th:each="menu: ${menuList}">
+        <td th:text="${menu.id}"></td>
+        <td th:text="${menu.menuWriter}"></td>
+        <td th:text="${menu.menuComment}"></td>
+        <td th:text="${menu.menuCategory}"></td>
+        <td th:text="${menu.fileAttached}"></td>
     </tr>
 </table>
 

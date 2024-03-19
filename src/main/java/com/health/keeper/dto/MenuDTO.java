@@ -38,7 +38,7 @@ public class MenuDTO {
         menuDTO.setMenuUpdatedTime(menuEntity.getUpdatedTime());
         //첨부파일
         if(menuEntity.getFileAttached() == 0){
-            menuDTO.setFileAttached(menuEntity.getFileAttached());
+            menuDTO.setFileAttached(0);
         }else{
             List<String> originalFileNameList = new ArrayList<>();
             List<String> storedFileNameList = new ArrayList<>();
