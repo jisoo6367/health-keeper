@@ -20,7 +20,11 @@
         <td th:text="${menu.menuWriter}"></td>
         <td th:text="${menu.menuComment}"></td>
         <td th:text="${menu.menuCategory}"></td>
-        <td th:text="${menu.fileAttached}"></td>
+        <td th:if="${menu.fileAttached == 1}">O
+        </td>
+        <td th:if="${menu.fileAttached == 0}">
+        X
+        </td>
     </tr>
 </table>
 

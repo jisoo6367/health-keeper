@@ -39,16 +39,21 @@ public class MenuService {
     public void save(MenuDTO menuDTO) throws IOException {
 
             if(menuDTO.getMenuFile().isEmpty()){
+                System.out.println("서비스의 이프절인지");
                 MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
                 menuRepository.save(menuEntity);
-            } else{
 
-                MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
+            } else{
+                System.out.println("서비스의 엘스절인지");
+
+                MenuEntity menuEntity = MenuEntity.toSaveFileEntity(menuDTO);
                 //메뉴테이블에 올리고 게시글의 번호 가져오기
                 Long saveId = menuRepository.save(menuEntity).getId();
                 MenuEntity menu = menuRepository.findById(saveId).get();
                 System.out.println("findById(게시글번호) = " + menuRepository.findById(saveId));
+                //Optional[com.health.keeper.entity.MenuEntity@21e63377]
                 System.out.println("거기에 .get() = " + menu);
+                //com.health.keeper.entity.MenuEntity@2054b41c
 
                 for(MultipartFile menuFile : menuDTO.getMenuFile()){
                     String originalFilename = menuFile.getOriginalFilename();
