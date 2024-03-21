@@ -20,7 +20,10 @@
         <td th:text="${menu.menuWriter}"></td>
         <td th:text="${menu.menuComment}"></td>
         <td th:text="${menu.menuCategory}"></td>
-        <td th:if="${menu.fileAttached == 1}">O
+        <td th:if="${menu.fileAttached == 1}">
+            <p th:each="fileName : ${menu.storedFileName}">
+                <img th:src="@{|/upload/${fileName}|}" alt="">
+            </p>
         </td>
         <td th:if="${menu.fileAttached == 0}">
         X
