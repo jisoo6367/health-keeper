@@ -82,7 +82,7 @@ public class BoardService {
             for(MultipartFile boardFile: boardDTO.getBoardFile()) { // 1
                 String originalFilename = boardFile.getOriginalFilename(); // 2
                 String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3
-                String savePath = "C:/springboot_img/" + storedFileName; // 4
+                String savePath = "C:/springboot_img/board/" + storedFileName; // 4
                 boardFile.transferTo(new File(savePath)); // 5 파일 저장까지만 완료
                 //add exception처리하면 컨트롤러의 save도 빨간줄 동일처리해줘야함
 

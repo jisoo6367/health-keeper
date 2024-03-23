@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+//내PC말고 이미지비비에 저장하려고 시도했던 서비스.. 일단 멈춤
 @Service
 public class FileUploadService {
 

@@ -22,7 +22,7 @@
         <td th:text="${menu.menuCategory}"></td>
         <td th:if="${menu.fileAttached == 1}">
             <p th:each="fileName : ${menu.storedFileName}">
-                <img th:src="@{|/upload/${fileName}|}" alt="">
+                <img th:src="@{|/menu/upload/${fileName}|}" alt="" style="width:200px; height:200px;">
             </p>
         </td>
         <td th:if="${menu.fileAttached == 0}">

@@ -58,7 +58,7 @@ public class MenuService {
                 for(MultipartFile menuFile : menuDTO.getMenuFile()){
                     String originalFilename = menuFile.getOriginalFilename();
                     String storedFileName = System.currentTimeMillis()+ "_" + originalFilename;
-                    String savePath = "C:/springboot_img/" + storedFileName;
+                    String savePath = "C:/springboot_img/menu/" + storedFileName;
                     menuFile.transferTo(new File(savePath));
 
                     MenuFileEntity menuFileEntity = MenuFileEntity.toMenuFileEntity(menu, originalFilename, storedFileName);

@@ -40,12 +40,12 @@ public class BoardController {
     }
 
     @PostMapping("/save")
-    //public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
-    public String save(@ModelAttribute BoardDTO boardDTO, @RequestPart("boardFile")MultipartFile image) throws IOException {
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
+    //public String save(@ModelAttribute BoardDTO boardDTO, @RequestPart("boardFile")MultipartFile image) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
         boardService.save(boardDTO);
         //fileUploadService.uploadImageToImgBB(boardFile);
-        fileUploadService.uploadImage(image);
+        //fileUploadService.uploadImage(image);
         return "redirect:/board/paging";
     }
 
@@ -96,6 +96,7 @@ public class BoardController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id){
         boardService.delete(id);
+
         return "redirect:/board/paging";
     }
 
