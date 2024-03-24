@@ -52,4 +52,13 @@ public class MenuController {
         return "redirect:/menu/list";
     }
 
+    @GetMapping("/detail/{id}")
+    public String showDetail (@PathVariable("id")Long id, Model model) {
+        System.out.println("id = " + id);
+        MenuDTO menuDTO = menuService.findById(id);
+
+        model.addAttribute("menu", menuDTO);
+        return "menuDetail";
+    }
+
 }

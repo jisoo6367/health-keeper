@@ -65,8 +65,6 @@ public class MenuService {
                     menuFileRepository.save(menuFileEntity);
                 }
             }
-
-
     }//save메서드-end
 
     @Transactional
@@ -79,8 +77,21 @@ public class MenuService {
         for(MenuEntity menuEntity: menuEntityList){
             menuDTOList.add(MenuDTO.toMenuDTO(menuEntity));
         }
-
         return menuDTOList;
     }
+
+    @Transactional
+    public MenuDTO findById(Long id){
+        Optional<MenuEntity> OptionalMenuEntity = menuRepository.findById(id);
+
+        if(OptionalMenuEntity.isPresent()){
+            MenuEntity menuEntity = OptionalMenuEntity.get();
+            MenuDTO menuDTO = MenuDTO.toMenuDTO(menuEntity);
+            return  menuDTO;
+        }else{
+            return null;
+        }
+    }
+
 
 }
