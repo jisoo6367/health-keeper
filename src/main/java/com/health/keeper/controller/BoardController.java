@@ -93,9 +93,35 @@ public class BoardController {
         // 이렇게 상세페이지로 가게하면, 수정만해도 조회수가 오르게 됨
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id){
-        boardService.delete(id);
+//    @GetMapping("/delete/{id}")
+//    public String delete (@PathVariable("id") Long id){
+//        boardService.delete(id);
+//        System.out.println("기존 삭제 컨트롤러");
+//        return "redirect:/board/paging";
+//    }
+
+    @PostMapping("/delete")
+    public String delete (@RequestBody BoardDTO boardDTO){
+        //boardService.delete(id);
+        System.out.println("경로에 저장된 이미지도 삭제하는 컨트롤러");
+        System.out.println(boardDTO.getId());
+        System.out.println(boardDTO.getStoredFileName());
+
+        // DB에서 삭제
+        boardService.delete(boardDTO.getId());
+
+        List<String> stordFileName = boardDTO.getStoredFileName();
+        //[1711177757014_TouchKeyboardThemeLight001.jpg]
+
+        for (String fileName : stordFileName) {
+            File file = new File("C:\\springboot_img\\board\\" + fileName);
+            boolean deleted = file.delete();
+            if (deleted) {
+                System.out.println("파일 삭제 성공: " + fileName);
+            } else {
+                System.out.println("파일 삭제 실패: " + fileName);
+            }
+        }
 
         return "redirect:/board/paging";
     }
