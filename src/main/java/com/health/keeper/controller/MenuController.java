@@ -31,8 +31,6 @@ public class MenuController {
     public String showMenuManagement(Model model){
         List<MenuDTO> menuDTOList = menuService.findAll();
         System.out.println("컨트롤러에서 menuDTOList = " + menuDTOList);
-        //왜 파일을 못가져오지?
-        //[MenuDTO(id=1, menuWriter=null, menuComment=null, menuCategory=breakfast, menuCreatedTime=2024-03-17T12:33:24.887101, menuUpdatedTime=2024-03-17T12:33:24.887101, menuFile=null, originalFileName=null, storedFileName=null, fileAttached=0), MenuDTO(id=2, menuWriter=${username}, menuComment=순대맛있었음, menuCategory=breakfast, menuCreatedTime=2024-03-17T12:59:17.827470, menuUpdatedTime=2024-03-17T12:59:17.827470, menuFile=null, originalFileName=null, storedFileName=null, fileAttached=0), MenuDTO(id=3, menuWriter=${username}, menuComment=순대맛있었음, menuCategory=breakfast, menuCreatedTime=2024-03-17T13:03:49.930102, menuUpdatedTime=2024-03-17T13:03:49.930102, menuFile=null, originalFileName=null, storedFileName=null, fileAttached=0), MenuDTO(id=4, menuWriter=jisoo, menuComment=순대맛있었음, menuCategory=breakfast, menuCreatedTime=2024-03-17T13:05:55.236586, menuUpdatedTime=2024-03-17T13:05:55.236586, menuFile=null, originalFileName=null, storedFileName=null, fileAttached=0), MenuDTO(id=5, menuWriter=jisoo, menuComment=400kcal 전주다녀옴ㅋ, menuCategory=breakfast, menuCreatedTime=2024-03-17T14:08:29.375805, menuUpdatedTime=2024-03-17T14:08:29.376811, menuFile=null, originalFileName=null, storedFileName=null, fileAttached=0), MenuDTO(id=6, menuWriter=jisoo, menuComment=350kacl 샌드위치, menuCategory=breakfast, menuCreatedTime=2024-03-17T17:52:15.106003, menuUpdatedTime=2024-03-17T17:52:15.106003, menuFile=null, originalFileName=null, storedFileName=null, fileAttached=0)]
 
         model.addAttribute("menuList", menuDTOList);
 
@@ -69,17 +67,21 @@ public class MenuController {
         System.out.println("menuDTO.getStoredFileName = " + menuDTO.getStoredFileName());
 
         menuService.delete(menuDTO.getId());
+
         List<String> storedFileName = menuDTO.getStoredFileName();
 
-        for(String fileName : storedFileName){
-            File file = new File("C:\\springboot-img\\menu\\" + fileName);
-            boolean deleted = file.delete();
-            if(deleted){
-                System.out.println("파일 삭제 성공 : " + fileName);
-            }else {
-                System.out.println("파일 삭제 실패 : " + fileName);
+        if(storedFileName != null){
+            for(String fileName : storedFileName){
+                File file = new File("C:\\springboot-img\\menu\\" + fileName);
+                boolean deleted = file.delete();
+                if(deleted){
+                    System.out.println("파일 삭제 성공 : " + fileName);
+                }else {
+                    System.out.println("파일 삭제 실패 : " + fileName);
+                }
             }
         }
+
         return "redirect:/menu/list";
     }
 

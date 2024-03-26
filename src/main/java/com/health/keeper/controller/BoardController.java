@@ -112,16 +112,18 @@ public class BoardController {
 
         List<String> storedFileName = boardDTO.getStoredFileName();
         //[1711177757014_TouchKeyboardThemeLight001.jpg]
-
-        for (String fileName : storedFileName) {
-            File file = new File("C:\\springboot_img\\board\\" + fileName);
-            boolean deleted = file.delete();
-            if (deleted) {
-                System.out.println("파일 삭제 성공: " + fileName);
-            } else {
-                System.out.println("파일 삭제 실패: " + fileName);
+        if(storedFileName != null){
+            for (String fileName : storedFileName) {
+                File file = new File("C:\\springboot_img\\board\\" + fileName);
+                boolean deleted = file.delete();
+                if (deleted) {
+                    System.out.println("파일 삭제 성공: " + fileName);
+                } else {
+                    System.out.println("파일 삭제 실패: " + fileName);
+                }
             }
         }
+
 
         return "redirect:/board/paging";
     }

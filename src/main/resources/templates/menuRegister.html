@@ -38,6 +38,13 @@
     const menuWriter = [[${username}]];
     console.log(menuWriter);
 
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const fileInput = document.querySelector('input[type="file"]');
+        if (!fileInput.files || fileInput.files.length === 0) {
+            event.preventDefault(); // 폼 제출 막기
+            alert('파일을 첨부해주세요.');
+        }
+    });
 
 </script>
 </html>

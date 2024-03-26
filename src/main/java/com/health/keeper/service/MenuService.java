@@ -38,7 +38,7 @@ public class MenuService {
     //서비스에서는 결국 DTO -> Entity 변환 또는 Entity -> DTO변환을 해야하게됨
     public void save(MenuDTO menuDTO) throws IOException {
 
-            if(menuDTO.getMenuFile().isEmpty()){
+            if(menuDTO.getFileAttached() == 0){
                 System.out.println("서비스의 이프절인지");
                 MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
                 menuRepository.save(menuEntity);

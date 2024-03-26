@@ -48,21 +48,25 @@
         const id = [[${menu.id}]];
         const storedFileName = [[${menu.storedFileName}]];
 
-        $.ajax({
-            type: "post",
-            url: "/menu/delete",
-            contentType: "application/json",
-            data: JSON.stringify({ id: id, storedFileName: storedFileName }),
+        if(confirm("정말 삭제 하시겠습니까?")){
+            $.ajax({
+                type: "post",
+                url: "/menu/delete",
+                contentType: "application/json",
+                data: JSON.stringify({ id: id, storedFileName: storedFileName }),
 
-            success: function(response) {
-                console.log("삭제 요청 성공");
-                alert("삭제되었습니다.");
-                location.href = '/menu/list';
-            },
-            error: function(xhr, status, error) {
-                console.error("삭제 요청 실패:", error);
-            }
-        });
+                success: function(response) {
+                    console.log("삭제 요청 성공");
+                    alert("삭제되었습니다.");
+                    location.href = '/menu/list';
+                },
+                error: function(xhr, status, error) {
+                    console.error("삭제 요청 실패:", error);
+                }
+            });
+        }
+
+
     }
 
 </script>
