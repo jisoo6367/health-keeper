@@ -24,11 +24,11 @@
         <td th:text="${menu.menuComment}"></td>
         <td th:text="${menu.menuCategory}"></td>
         <td th:if="${menu.fileAttached == 1}">
-        <td>
-            <p th:each="fileName : ${menu.storedFileName}">
+        <div>
+            <p th:each="fileName : ${menu.storedFileName}" style="display: inline-block; margin-right: 10px;">
                 <img th:src="@{|/menu/upload/${fileName}|}" alt="" style="width:200px; height:200px;">
             </p>
-        </td>
+        </div>
         <td th:if="${menu.fileAttached == 0}">
         X
         </td>
@@ -51,7 +51,6 @@
 
 
     //식단 디테일로
-
     $('.moveDetail').on('click', function() {
 
         var menuId = $(this).attr('data-menu-id');

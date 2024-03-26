@@ -110,10 +110,10 @@ public class BoardController {
         // DB에서 삭제
         boardService.delete(boardDTO.getId());
 
-        List<String> stordFileName = boardDTO.getStoredFileName();
+        List<String> storedFileName = boardDTO.getStoredFileName();
         //[1711177757014_TouchKeyboardThemeLight001.jpg]
 
-        for (String fileName : stordFileName) {
+        for (String fileName : storedFileName) {
             File file = new File("C:\\springboot_img\\board\\" + fileName);
             boolean deleted = file.delete();
             if (deleted) {

@@ -94,4 +94,7 @@ public class MenuService {
     }
 
 
+    public void delete(Long id) {
+        menuRepository.deleteById(id);
+    }
 }

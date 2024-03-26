@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -59,6 +60,27 @@ public class MenuController {
 
         model.addAttribute("menu", menuDTO);
         return "menuDetail";
+    }
+
+    //게시글& 첨부파일 삭제
+    @PostMapping("/delete")
+    public String delete (@RequestBody MenuDTO menuDTO){
+        System.out.println("menuDTO.getId = " + menuDTO.getId());
+        System.out.println("menuDTO.getStoredFileName = " + menuDTO.getStoredFileName());
+
+        menuService.delete(menuDTO.getId());
+        List<String> storedFileName = menuDTO.getStoredFileName();
+
+        for(String fileName : storedFileName){
+            File file = new File("C:\\springboot-img\\menu\\" + fileName);
+            boolean deleted = file.delete();
+            if(deleted){
+                System.out.println("파일 삭제 성공 : " + fileName);
+            }else {
+                System.out.println("파일 삭제 실패 : " + fileName);
+            }
+        }
+        return "redirect:/menu/list";
     }
 
 }
