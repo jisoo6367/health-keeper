@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Save</title>
+    <title>식단 관리</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/css/search-bar.css">
     <!-- Google Fonts -->
@@ -13,6 +13,7 @@
 <h2>식단 관리 등록하는 페이지</h2>
 <form role="form" action="/menu/save" method="post" enctype="multipart/form-data">
     <input type="hidden" name="menuWriter" th:value="${username}"><br>
+    <label>날짜 : </label><input type="date" name="menuCreatedTime"><br>
     <label>사진 첨부 : </label><input type="file" name="menuFile" formenctype="multipart/form-data" multiple><br>
     <label>식단 구분 : </label>
     <select name="menuCategory">
@@ -38,13 +39,26 @@
     const menuWriter = [[${username}]];
     console.log(menuWriter);
 
+
     document.querySelector('form').addEventListener('submit', function(event) {
         const fileInput = document.querySelector('input[type="file"]');
+        const dateInput = document.querySelector('input[type="date"]').value;
+
         if (!fileInput.files || fileInput.files.length === 0) {
             event.preventDefault(); // 폼 제출 막기
             alert('파일을 첨부해주세요.');
         }
+
+        if (dateInputValue === "") {
+            event.preventDefault(); // 폼 제출 막기
+            alert('날짜를 선택해주세요.');
+        }
     });
+
+
+
+
+
 
 </script>
 </html>

@@ -10,28 +10,36 @@
 <body>
 <h2>식단 기록 상세보기</h2>
 
-<table>
-    <tr>
-        <th>식단기록 번호</th>
-        <td th:text="${menu.id}"></td>
-    </tr>
-    <tr>
-        <th>등록 날짜</th>
-        <td th:text="${menu.menuCreatedTime}"></td>
-    </tr>
-    <tr>
-        <th>구분</th>
-        <td th:text="${menu.menuCategory}"></td>
-    </tr>
-    <tr th:if="${menu.fileAttached == 1}">
-        <th>image</th>
-        <td th:each="fileName : ${menu.storedFileName}">
-            <img th:src="@{|/menu/upload/${fileName}|}" alt="" style="width:200px; height:200px;">
-        </td>
-    </tr>
-</table>
-<button type="button" class="btn btn-outline-primary" onclick="listReq()">목록</button>
-<button type="button" class="btn btn-outline-primary" onclick="deleteReq()">삭제</button>
+<form id="frmSendValue" name="frmSendValue" action="/menu/detail" method="post">
+    <table>
+        <tr>
+            <th>날짜</th>
+            <th>category</th>
+            <th>comment</th>
+            <th>file</th>
+        </tr>
+        <tr th:each="menu: ${menuList}"
+            th:data-id="${menu.id}"
+            th:data-stored-file-name="${menu.storedFileName}">
+            <td th:text="${menu.menuCreatedTime}"></td>
+            <td th:text="${menu.menuCategory}"></td>
+            <td th:text="${menu.menuComment}"></td>
+            <td th:if="${menu.fileAttached == 1}">
+                <div>
+                    <p th:each="fileName : ${menu.storedFileName}" style="display: inline-block; margin-right: 10px;">
+                        <img th:src="@{|/menu/upload/${fileName}|}" alt="" style="width:200px; height:200px;">
+                    </p>
+                </div>
+            <td th:if="${menu.fileAttached == 0}">
+                X
+            </td>
+            <td><button type="button" class="btn btn-outline-primary deleteBtn">삭제</button></td>
+        </tr>
+
+    </table>
+    <button type="button" class="btn btn-outline-primary" onclick="listReq()">목록</button>
+</form>
+
 
 </body>
 
@@ -42,13 +50,15 @@
         location.href = "/menu/list";
     }
 
-    // 게시글 삭제
-    const deleteReq = () => {
+    // 특정 행 삭제
+    $(".deleteBtn").on("click", function(){
+        const id = $(this).parents("tr").attr('data-id');
+        console.log(id);
+        const storedFileName = $(this).parents("tr").attr('data-stored-file-name');
+        console.log(storedFileName);
 
-        const id = [[${menu.id}]];
-        const storedFileName = [[${menu.storedFileName}]];
 
-        if(confirm("정말 삭제 하시겠습니까?")){
+         if(confirm("정말 삭제 하시겠습니까?")){
             $.ajax({
                 type: "post",
                 url: "/menu/delete",
@@ -66,8 +76,14 @@
             });
         }
 
+    });
 
-    }
+
+
+
+
+
+
 
 </script>
 </html>

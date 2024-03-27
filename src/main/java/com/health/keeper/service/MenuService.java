@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,5 +97,29 @@ public class MenuService {
 
     public void delete(Long id) {
         menuRepository.deleteById(id);
+    }
+
+    public List<MenuDTO> findByMenuWriter(String menuWriter){
+        List<MenuEntity> menuEntityList = menuRepository.findByMenuWriter(menuWriter);
+
+        System.out.println("서비스 findByMenuWriter 에서 메뉴엔티티리스트" + menuEntityList);
+        //Entity -> DTO
+        List<MenuDTO> menuDTOList = new ArrayList<>();
+        for(MenuEntity menuEntity: menuEntityList){
+            menuDTOList.add(MenuDTO.toMenuDTO(menuEntity));
+        }
+        return menuDTOList;
+    }
+
+    public List<MenuDTO> findByMenuWriterAndMenuCreatedTime(String menuWriter, LocalDate createdTime){
+        List<MenuEntity> menuEntityList = menuRepository.findByMenuWriterAndCreatedTime(menuWriter, createdTime);
+
+        System.out.println("서비스 findByMenuWriterAndMenuCreatedTime 에서 메뉴엔티티리스트" + menuEntityList);
+        //Entity -> DTO
+        List<MenuDTO> menuDTOList = new ArrayList<>();
+        for(MenuEntity menuEntity: menuEntityList){
+            menuDTOList.add(MenuDTO.toMenuDTO(menuEntity));
+        }
+        return menuDTOList;
     }
 }

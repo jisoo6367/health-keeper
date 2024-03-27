@@ -6,7 +6,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 // DB 테이블 역할을 하는 클래스
@@ -14,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "menu_table")
-public class MenuEntity extends BaseEntity{
+public class MenuEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +35,10 @@ public class MenuEntity extends BaseEntity{
     @Column
     private int fileAttached; // 첨부파일 있으면 1, 없으면 0
 
+    @Column
+    @Temporal(TemporalType.DATE) // Date 타입으로 매핑
+    private LocalDate createdTime;
+
     @OneToMany(mappedBy = "menuEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<MenuFileEntity> menuFileEntityList = new ArrayList<>();
 
@@ -43,6 +50,7 @@ public class MenuEntity extends BaseEntity{
         menuEntity.setMenuCategory(menuDTO.getMenuCategory());
         menuEntity.setMenuComment(menuDTO.getMenuComment());
         menuEntity.setMenuWriter(menuDTO.getMenuWriter());
+        menuEntity.setCreatedTime(menuDTO.getMenuCreatedTime());
         menuEntity.setFileAttached(0);
 
         return menuEntity;
@@ -55,6 +63,7 @@ public class MenuEntity extends BaseEntity{
         menuEntity.setMenuCategory(menuDTO.getMenuCategory());
         menuEntity.setMenuComment(menuDTO.getMenuComment());
         menuEntity.setMenuWriter(menuDTO.getMenuWriter());
+        menuEntity.setCreatedTime(menuDTO.getMenuCreatedTime());
         menuEntity.setFileAttached(1);
 
         return menuEntity;

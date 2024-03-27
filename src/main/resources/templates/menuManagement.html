@@ -10,17 +10,15 @@
 <form id="frmSendValue" name="frmSendValue" action="/menu/detail" method="post">
 <table>
     <tr>
-        <th>id</th>
-        <th>writer</th>
+        <th>날짜</th>
         <th>comment</th>
         <th>category</th>
         <th>file</th>
     </tr>
-    <tr  th:each="menu: ${menuList}" data-menu-id="${menu.id}">
+    <tr th:each="menu: ${menuList}" data-menu-date="${menu.menuCreatedTime}">
         <td>
-            <a th:href="@{|/menu/detail/${menu.id}|}" th:text="${menu.id}"></a>
+            <a th:href="@{|/menu/detail/${menu.menuCreatedTime}|}" th:text="${menu.menuCreatedTime}"></a>
         </td>
-        <td th:text="${menu.menuWriter}"></td>
         <td th:text="${menu.menuComment}"></td>
         <td th:text="${menu.menuCategory}"></td>
         <td th:if="${menu.fileAttached == 1}">
@@ -44,19 +42,17 @@
 
     const frmSendValue = $("#frmSendValue");
 
+    const username = [[${username}]];
+    console.log(username);
+
     // 식단 등록
     const registerReq = () => {
         location.href = "/menu/register";
     }
 
 
-    //식단 디테일로
-    $('.moveDetail').on('click', function() {
 
-        var menuId = $(this).attr('data-menu-id');
-        var url = '/menu/detail?id=' + menuId;
-        location.href = url;
-    });
+
 
 
 </script>

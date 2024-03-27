@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -17,6 +19,7 @@ public class CommentDTO {
     private Long boardId; //게시글 번호
     private LocalDateTime commentCreatedTime;
 
+
     public static CommentDTO toCommentDTO(CommentEntity commentEntity, Long boardId) {
         CommentDTO commentDTO = new CommentDTO();
 
@@ -24,6 +27,7 @@ public class CommentDTO {
         commentDTO.setCommentWriter(commentEntity.getCommentWriter());
         commentDTO.setCommentContents(commentEntity.getCommentContents());
         commentDTO.setCommentCreatedTime(commentEntity.getCreatedTime());
+
         //commentDTO.setBoardId(commentEntity.getBoardEntity().getId());
         //boardId 매개변수 없이 위애껄로 쓸거면 서비스에 @Transactional 붙여야함
         commentDTO.setBoardId(boardId);

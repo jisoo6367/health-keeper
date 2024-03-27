@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data //(@Getter + @Setter + @ToString + @NoArgsConstructor + @AllArgsConstructor)
@@ -19,13 +21,14 @@ public class MenuDTO {
     private String menuWriter;
     private String menuComment;
     private String menuCategory;
-    private LocalDateTime menuCreatedTime;
+    private LocalDate  menuCreatedTime;
     private LocalDateTime menuUpdatedTime;
 
     private List<MultipartFile> menuFile; // save.html -> Controller 넘어갈 때 파일을 담는 용도
     private List<String> originalFileName;
     private List<String> storedFileName; // 서버 저장용 파일 이름
     private int fileAttached; // 파일 첨부 여부 (첨부: 1 , 미첨부: 0)
+
 
     // Entity -> DTO
     public static MenuDTO toMenuDTO(MenuEntity menuEntity){
@@ -36,7 +39,7 @@ public class MenuDTO {
         menuDTO.setMenuComment(menuEntity.getMenuComment());
         menuDTO.setMenuCategory(menuEntity.getMenuCategory());
         menuDTO.setMenuCreatedTime(menuEntity.getCreatedTime());
-        menuDTO.setMenuUpdatedTime(menuEntity.getUpdatedTime());
+
         //첨부파일
         if(menuEntity.getFileAttached() == 0){
             menuDTO.setFileAttached(0);

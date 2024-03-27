@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -28,11 +29,14 @@ public class MenuController {
 
 
     @GetMapping("/list")
-    public String showMenuManagement(Model model){
-        List<MenuDTO> menuDTOList = menuService.findAll();
+    public String showMenuManagement(Principal principal, Model model){
+        //List<MenuDTO> menuDTOList = menuService.findAll();
+        List<MenuDTO> menuDTOList = menuService.findByMenuWriter(principal.getName());
+
         System.out.println("컨트롤러에서 menuDTOList = " + menuDTOList);
 
         model.addAttribute("menuList", menuDTOList);
+        model.addAttribute("username", principal.getName());
 
         return "menuManagement";
     }
@@ -51,12 +55,14 @@ public class MenuController {
         return "redirect:/menu/list";
     }
 
-    @GetMapping("/detail/{id}")
-    public String showDetail (@PathVariable("id")Long id, Model model) {
-        System.out.println("id = " + id);
-        MenuDTO menuDTO = menuService.findById(id);
+    @GetMapping("/detail/{date}")
+    public String showDetail (@PathVariable("date")LocalDate menuCreatedTime, Principal principal, Model model) {
+        System.out.println("detail로 가는 컨트롤러에서 menuCreatedTime = " + menuCreatedTime);
+        //MenuDTO menuDTO = menuService.findById(id);
+        List<MenuDTO> menuDTOList = menuService.findByMenuWriterAndMenuCreatedTime(principal.getName(),menuCreatedTime);
 
-        model.addAttribute("menu", menuDTO);
+        System.out.println("컨트롤러에서 ========" + menuDTOList);
+        model.addAttribute("menuList", menuDTOList);
         return "menuDetail";
     }
 
