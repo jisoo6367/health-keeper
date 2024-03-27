@@ -36,10 +36,12 @@ public class MenuService {
 
     private final MenuFileRepository menuFileRepository;
 
+    @Transactional
     //서비스에서는 결국 DTO -> Entity 변환 또는 Entity -> DTO변환을 해야하게됨
     public void save(MenuDTO menuDTO) throws IOException {
 
-            if(menuDTO.getFileAttached() == 0){
+            //if(menuDTO.getFileAttached() == 0){
+            if(menuDTO.getMenuFile().isEmpty()){
                 System.out.println("서비스의 이프절인지");
                 MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
                 menuRepository.save(menuEntity);
@@ -99,6 +101,7 @@ public class MenuService {
         menuRepository.deleteById(id);
     }
 
+    @Transactional
     public List<MenuDTO> findByMenuWriter(String menuWriter){
         List<MenuEntity> menuEntityList = menuRepository.findByMenuWriter(menuWriter);
 
@@ -111,6 +114,7 @@ public class MenuService {
         return menuDTOList;
     }
 
+    @Transactional
     public List<MenuDTO> findByMenuWriterAndMenuCreatedTime(String menuWriter, LocalDate createdTime){
         List<MenuEntity> menuEntityList = menuRepository.findByMenuWriterAndCreatedTime(menuWriter, createdTime);
 

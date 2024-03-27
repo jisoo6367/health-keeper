@@ -4,6 +4,8 @@ import com.health.keeper.dto.MenuDTO;
 import com.health.keeper.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -91,4 +93,24 @@ public class MenuController {
         return "redirect:/menu/list";
     }
 
+    // ajax로 정보 받아서
+    @PostMapping(value ="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> update (@RequestBody MenuDTO menuDTO, Model model){
+        System.out.println("menuDTO.getId = " + menuDTO.getId());
+        System.out.println("menuDTO.getStoredFileName = " + menuDTO.getStoredFileName());
+
+        model.addAttribute("menuDTO", menuDTO);
+        return ResponseEntity.ok().build(); // 응답 반환
+    }
+
+    // 페이지 반환
+    @GetMapping("/modify/{id}")
+    public String showModifyForm(@PathVariable("id") Long id, Model model){
+        System.out.println("id = " + id);
+        MenuDTO menuDTO = menuService.findById(id);
+        model.addAttribute("menuDTO", menuDTO);
+        System.out.println("modify 페이지로 가면서 ====" + menuDTO);
+        return "menuModify";
+    }
 }
+

@@ -37,8 +37,7 @@ public class BoardService {
     public void save(BoardDTO boardDTO) throws IOException {
 
         // 파일 첨부 여부에 따라 로직 분리해야함
-        //if(boardDTO.getBoardFile().isEmpty()){
-        if(boardDTO.getFileAttached() == 0){
+        if(boardDTO.getBoardFile().isEmpty()){
             System.out.println("첨부파일 없을 때");
             BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
             boardRepository.save(boardEntity); //save 메서드는 매개변수로 Entity를 줘야하고, 리턴도 Entity 타입으로 된다.

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>식단 관리</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/css/search-bar.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+</head>
+<body>
+<h2>식단 수정 페이지</h2>
+<form role="form" action="/menu/update" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="menuWriter" th:value="${menuDTO.menuWriter}"><br>
+    <label>날짜 : </label><input type="date" name="menuCreatedTime" id="menuCreatedTime" th:value="${menuDTO.menuCreatedTime}"><br>
+    <label>사진 첨부 : </label>
+    <label>식단 구분 : </label>
+    <label>코멘트 : </label> <input type="text" name="menuComment" th:value="${menuDTO.menuComment}"><br>
+    <button type="submit" class="btn btn-outline-primary">수정</button>
+    <button type="button" class="btn btn-outline-secondary" onclick="listReq()">취소</button>
+</form>
+
+
+
+</body>
+<script th:inline="javascript">
+
+    // 뒤로 (디테일페이지)
+    const listReq = () => {
+        const date = [[${menuDTO.menuCreatedTime}]]
+        console.log(date);
+        location.href = "/menu/detail/" + date;
+    }
+</script>
+</html>

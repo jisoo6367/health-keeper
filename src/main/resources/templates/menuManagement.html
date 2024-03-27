@@ -34,7 +34,8 @@
 </table>
 </form>
 
-<button type="button" class="btn btn-outline-primary me-md-2" onclick="registerReq()">식단 등록</button>
+<button type="button" class="btn btn-outline-primary" onclick="registerReq()">식단 등록</button>
+<button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -48,6 +49,11 @@
     // 식단 등록
     const registerReq = () => {
         location.href = "/menu/register";
+    }
+
+    // 홈으로
+        const goHome = () => {
+        location.href = "/";
     }
 
 

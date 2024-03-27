@@ -33,6 +33,7 @@
             <td th:if="${menu.fileAttached == 0}">
                 X
             </td>
+            <td><button type="button" class="btn btn-outline-primary modifyBtn">수정</button></td>
             <td><button type="button" class="btn btn-outline-primary deleteBtn">삭제</button></td>
         </tr>
 
@@ -50,20 +51,29 @@
         location.href = "/menu/list";
     }
 
+    // 수정하러
+    $('.modifyBtn').on('click', function() {
+        const id = $(this).parents("tr").attr('data-id');
+        console.log(id);
+        var url = '/menu/modify/' + id;
+        location.href = url;
+    });
+
+
+
+
+
     // 특정 행 삭제
     $(".deleteBtn").on("click", function(){
         const id = $(this).parents("tr").attr('data-id');
-        console.log(id);
-        const storedFileName = $(this).parents("tr").attr('data-stored-file-name');
-        console.log(storedFileName);
-
+        const storedFileName = $(this).parents("tr").attr('data-stored-file-name').slice(1, -1);
 
          if(confirm("정말 삭제 하시겠습니까?")){
             $.ajax({
                 type: "post",
                 url: "/menu/delete",
                 contentType: "application/json",
-                data: JSON.stringify({ id: id, storedFileName: storedFileName }),
+                data: JSON.stringify({ id: id, storedFileName: [storedFileName] }),
 
                 success: function(response) {
                     console.log("삭제 요청 성공");

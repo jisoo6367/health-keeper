@@ -72,7 +72,8 @@
 </table>
 
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button type="button" class="btn btn-outline-primary me-md-2" onclick="saveReq()">글 작성</button>
+    <button type="button" class="btn btn-outline-primary" onclick="saveReq()">글 작성</button>
+    <button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 </div>
 
 <nav aria-label="Page navigation">
@@ -117,6 +118,11 @@
         console.log(page);
         localStorage.setItem('page','[[${boardList.number +1}]]');
         location.href = "/board/save";
+    }
+
+    // 홈으로
+    const goHome = () => {
+        location.href = "/";
     }
 </script>
 </html>
