@@ -1,9 +1,12 @@
 package com.health.keeper.controller;
 
 import com.health.keeper.dto.MenuDTO;
+import com.health.keeper.entity.MenuEntity;
+import com.health.keeper.entity.MenuFileEntity;
 import com.health.keeper.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -120,7 +123,7 @@ public class MenuController {
         return "menuModify";
     }
 
-    // ajax로 정보 받아서
+    // ajax로 정보 받아서 //아직 안쓴거임
     @PostMapping(value ="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update (@RequestBody MenuDTO menuDTO, Model model){
         System.out.println("menuDTO.getId = " + menuDTO.getId());
@@ -130,10 +133,10 @@ public class MenuController {
         return ResponseEntity.ok().build(); // 응답 반환
     }
 
-    @GetMapping("/update/deleteFile")
-    public String deleteFile (){
-        System.out.println("파일지우는 컨트롤러 도착");
-        return "homePage";
+    @GetMapping(value = "/getFiles/{id}" , produces = {"application/json; charset=utf-8"})
+    public @ResponseBody ResponseEntity<List<MenuDTO>> showAttachFiles(@PathVariable("id") MenuEntity menuEntity){
+        System.out.println("첨부파일 가져오는 컨트롤러 ======");
+        return new ResponseEntity<List<MenuDTO>>(menuService.getAttachFileList(menuEntity), HttpStatus.OK);
     }
 
 }

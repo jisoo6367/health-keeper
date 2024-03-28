@@ -126,4 +126,21 @@ public class MenuService {
         }
         return menuDTOList;
     }
+
+    // 특정 게시글의 모든 첨부파일 조회
+    public List<MenuDTO> getAttachFileList(MenuEntity menuEntity){
+
+        List<MenuFileEntity> menuFileEntityList = menuFileRepository.findAllByMenuEntity(menuEntity);
+        System.out.println("첨부파일조회하는 서비스에서 첨파 엔티티리스트: "+ menuFileEntityList);
+
+        //Entity -> DTOList
+        List<MenuDTO> menuDTOList = new ArrayList<>();
+        for(MenuFileEntity menuFileEntity: menuFileEntityList){
+            menuDTOList.add(MenuDTO.toMenuDTO(menuFileEntity));
+        }
+        System.out.println("서비스에서 첨부파일 DTO리스트 : " + menuDTOList);
+        return menuDTOList;
+
+
+    }
 }

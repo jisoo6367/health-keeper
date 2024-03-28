@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>식단 관리</title>
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/css/search-bar.css">
     <!-- Google Fonts -->
@@ -75,6 +77,30 @@
         console.log(listItem);
         listItem.remove();
     };
+
+    const id = [[${menuDTO.id}]];
+    console.log(id);
+
+    //수정페이지의 게시물 표시 후, ajax로 첨부파일 정보를 가져오는 함수를 작성
+	function getAttachFileInfo(){
+        console.log("겟어태치파일 함수작동");
+		$.ajax({
+
+		type:"get" ,
+		url: "/menu/getFiles/" + id ,
+		dataType: "json" ,
+        success: function(response) {
+            console.log("성공..일리가..");
+        },
+        error: function(xhr, status, error) {
+            console.error("요청 실패:", error);
+        }
+		});
+	}
+
+	$(document).ready(function(){
+	    getAttachFileInfo();
+	}) ;
 
 </script>
 </html>

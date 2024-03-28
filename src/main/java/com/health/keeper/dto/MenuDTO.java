@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -59,5 +60,16 @@ public class MenuDTO {
     }
 
 
+    // Entity -> DTO
+    public static MenuDTO toMenuDTO(MenuFileEntity menuFileEntity){
+        MenuDTO menuDTO = new MenuDTO();
+
+        menuDTO.setId(menuFileEntity.getId());
+        menuDTO.setOriginalFileName(Collections.singletonList(menuFileEntity.getOriginalFileName()));
+        menuDTO.setStoredFileName(Collections.singletonList(menuFileEntity.getStoredFileName()));
+
+        return menuDTO;
+
+    };
 
 }
