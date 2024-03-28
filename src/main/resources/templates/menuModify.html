@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
 <head>
     <meta charset="UTF-8">
     <title>식단 관리</title>
@@ -14,9 +16,41 @@
 <form role="form" action="/menu/update" method="post" enctype="multipart/form-data">
     <input type="hidden" name="menuWriter" th:value="${menuDTO.menuWriter}"><br>
     <label>날짜 : </label><input type="date" name="menuCreatedTime" id="menuCreatedTime" th:value="${menuDTO.menuCreatedTime}"><br>
-    <label>사진 첨부 : </label>
     <label>식단 구분 : </label>
+    <select  name="menuCategory" id="menuCategory">
+        <option value="breakfast" th:selected='${(menuDTO.menuCategory == "breakfast") ? "selected" : "" }'>아침</option>
+        <option value="lunch" th:selected='${(menuDTO.menuCategory == "lunch") ? "selected" : "" }'>점심</option>
+        <option value="dinner" th:selected='${(menuDTO.menuCategory == "dinner") ? "selected" : "" }'>저녁</option>
+        <option value="snack" th:selected='${(menuDTO.menuCategory == "snack") ? "selected" : "" }'>간식</option>
+    </select><br>
     <label>코멘트 : </label> <input type="text" name="menuComment" th:value="${menuDTO.menuComment}"><br>
+
+
+
+    <!-- 첨부파일 결과 표시 -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong style="font-size:16px;">첨부 파일</strong>
+                </div><!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="form-group uploadDiv">
+                        <input id="inputFile" type="file" name="uploadFiles" formenctype="multipart/form-data" multiple="multiple" /><br>
+                    </div>
+                    <div class="form-group fileUploadResult">
+                        <ul style="list-style-type: none;">
+                            <!-- 업로드 후 처리결과가 표시될 영역 -->
+                        </ul>
+                    </div><!-- /.fileUploadResult -->
+                </div><!-- /.panel-body -->
+            </div><!-- /.panel -->
+        </div><!-- /.col-lg-12 -->
+    </div><!-- /.row -->
+
+
+
+
     <button type="submit" class="btn btn-outline-primary">수정</button>
     <button type="button" class="btn btn-outline-secondary" onclick="listReq()">취소</button>
 </form>
@@ -32,5 +66,15 @@
         console.log(date);
         location.href = "/menu/detail/" + date;
     }
+
+
+    function deleteFile() {
+        console.log("딜리트파일 함수");
+        const listItem = event.target.parentElement;
+
+        console.log(listItem);
+        listItem.remove();
+    };
+
 </script>
 </html>

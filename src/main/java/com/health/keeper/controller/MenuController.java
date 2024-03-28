@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -93,6 +94,32 @@ public class MenuController {
         return "redirect:/menu/list";
     }
 
+    // 페이지 반환
+    @GetMapping("/modify/{id}")
+    public String showModifyForm(@PathVariable("id") Long id, Model model){
+        System.out.println("id = " + id);
+        MenuDTO menuDTO = menuService.findById(id);
+        model.addAttribute("menuDTO", menuDTO);
+        System.out.println("modify 페이지로 가면서 ====" + menuDTO);
+
+
+        List<String> storedFileName = menuDTO.getStoredFileName();
+        List<File> fileList = new ArrayList<>();
+
+        if (storedFileName != null) {
+            for (String fileName : storedFileName) {
+                File file = new File("C:\\springboot-img\\menu\\" + fileName);
+                fileList.add(file);
+                System.out.println("컨트롤러에서 파일 객체 ==== " + file);
+            }
+        }
+        model.addAttribute("fileList", fileList);
+
+        List<String> originalFileName = menuDTO.getOriginalFileName();
+        model.addAttribute("orgFileName", originalFileName);
+        return "menuModify";
+    }
+
     // ajax로 정보 받아서
     @PostMapping(value ="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update (@RequestBody MenuDTO menuDTO, Model model){
@@ -103,14 +130,11 @@ public class MenuController {
         return ResponseEntity.ok().build(); // 응답 반환
     }
 
-    // 페이지 반환
-    @GetMapping("/modify/{id}")
-    public String showModifyForm(@PathVariable("id") Long id, Model model){
-        System.out.println("id = " + id);
-        MenuDTO menuDTO = menuService.findById(id);
-        model.addAttribute("menuDTO", menuDTO);
-        System.out.println("modify 페이지로 가면서 ====" + menuDTO);
-        return "menuModify";
+    @GetMapping("/update/deleteFile")
+    public String deleteFile (){
+        System.out.println("파일지우는 컨트롤러 도착");
+        return "homePage";
     }
+
 }
 

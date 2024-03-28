@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Detail</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <!-- jquery cdn -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
@@ -46,15 +47,15 @@
     </tr>
 </table>
 </div>
-<button class="btn-outline-primary" onclick="listReq()">목록</button>
-<button class="btn-outline-primary" onclick="updateReq()">수정</button>
-<button class="btn-outline-primary" onclick="deleteReq()">삭제</button>
+<button class="btn btn-outline-primary" onclick="listReq()">목록</button>
+<button class="btn btn-outline-primary" onclick="updateReq()">수정</button>
+<button class="btn btn-outline-danger" onclick="deleteReq()">삭제</button>
 
 <!-- 댓글 작성 부분 -->
 <div id="comment-write">
     <input type="text" id="commentWriter" placeholder="작성자">
     <input type="text" id="commentContents" placeholder="내용">
-    <button id="comment-writer-btn" onclick="commentWrite()">댓글 작성</button>
+    <button class="btn btn-outline-info" id="comment-writer-btn" onclick="commentWrite()">댓글 작성</button>
 </div>
 
 <!-- 댓글 출력 부분 -->

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Update</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
 </head>
 <body>
 <form action="/board/update" method="post" name="updateForm">
@@ -13,7 +14,7 @@
     title : <input type="text" name="boardTitle" th:value="${boardUpdate.boardTitle}" ><br>
     contents : <textarea name="boardContents" cols="30" rows="10" th:text="${boardUpdate.boardContents}"></textarea><br>
     <input type="hidden" name="boardHits" th:value="${boardUpdate.boardHits}">
-    <input type="button" value="글 수정" onclick="boardUpdate()">
+    <button type="button" class="btn btn-outline-primary" onclick="boardUpdate()">수정</button>
 </form>
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -31,6 +32,8 @@
             alert("비밀번호가 일치하지 않습니다.");
         }
     }
+
+
 
 </script>
 </html>
