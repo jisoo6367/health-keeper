@@ -69,5 +69,21 @@ public class MenuEntity {
         return menuEntity;
     }
 
+    // DTO -> Entity (첨부파일 없는 경우)
+    public static MenuEntity toUpdateEntity(MenuDTO menuDTO){
+        MenuEntity menuEntity = new MenuEntity();
+
+        menuEntity.setId(menuDTO.getId()); //Id값 있으니까 insert문 아니고 update문임!
+        menuEntity.setMenuCategory(menuDTO.getMenuCategory());
+        menuEntity.setMenuComment(menuDTO.getMenuComment());
+        menuEntity.setMenuWriter(menuDTO.getMenuWriter());
+        menuEntity.setCreatedTime(menuDTO.getMenuCreatedTime());
+
+        if(menuDTO.getStoredFileName().isEmpty()){
+            menuEntity.setFileAttached(0);
+        }else{ menuEntity.setFileAttached(1);}
+
+        return menuEntity;
+    }
 
 }

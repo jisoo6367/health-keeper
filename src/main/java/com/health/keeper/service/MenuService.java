@@ -96,14 +96,19 @@ public class MenuService {
         }
     }
 
-
     public void delete(Long id) {
         menuRepository.deleteById(id);
     }
 
     @Transactional
+    public void deleteFile(String storedFileName) {
+        menuFileRepository.deleteByStoredFileName(storedFileName);
+        System.out.println("파일 삭제 서비스 도착");
+    }
+
+    @Transactional
     public List<MenuDTO> findByMenuWriter(String menuWriter){
-        List<MenuEntity> menuEntityList = menuRepository.findByMenuWriter(menuWriter);
+        List<MenuEntity> menuEntityList = menuRepository.findByMenuWriterOrderByCreatedTime(menuWriter);
 
         System.out.println("서비스 findByMenuWriter 에서 메뉴엔티티리스트" + menuEntityList);
         //Entity -> DTO
@@ -140,7 +145,35 @@ public class MenuService {
         }
         System.out.println("서비스에서 첨부파일 DTO리스트 : " + menuDTOList);
         return menuDTOList;
-
-
     }
+
+    @Transactional
+    public MenuDTO update(MenuDTO menuDTO) throws IOException {
+
+        for (MultipartFile file : menuDTO.getMenuFile()) {
+            if (file != null && !file.isEmpty()) {
+                System.out.println("수정 서비스 추가하는 첨파 있을 때");
+
+                MenuEntity menu = menuRepository.findById(menuDTO.getId()).get();
+                String originalFilename = file.getOriginalFilename();
+                String storedFileName = System.currentTimeMillis()+ "_" + originalFilename;
+                String savePath = "C:/springboot_img/menu/" + storedFileName;
+                file.transferTo(new File(savePath));
+
+                MenuFileEntity menuFileEntity = MenuFileEntity.toMenuFileEntity(menu, originalFilename, storedFileName);
+                menuFileRepository.save(menuFileEntity);
+            }
+
+
+        }
+        MenuEntity menuEntity = MenuEntity.toUpdateEntity(menuDTO);
+        menuRepository.save(menuEntity);
+
+
+        return findById(menuDTO.getId());
+    }
+
+
+
+
 }

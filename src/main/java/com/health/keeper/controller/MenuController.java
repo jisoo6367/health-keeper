@@ -123,14 +123,28 @@ public class MenuController {
         return "menuModify";
     }
 
-    // ajax로 정보 받아서 //아직 안쓴거임
-    @PostMapping(value ="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update (@RequestBody MenuDTO menuDTO, Model model){
+
+    @PostMapping(value ="/update")
+    public String update (MenuDTO menuDTO) throws IOException {
+
+        System.out.println("menuDTO.getDelFiles = " + menuDTO.getDelFiles());
+        System.out.println("menuDTO = " + menuDTO );
         System.out.println("menuDTO.getId = " + menuDTO.getId());
+        System.out.println("menuDTO.getMenuWriter = " + menuDTO.getMenuWriter());
         System.out.println("menuDTO.getStoredFileName = " + menuDTO.getStoredFileName());
 
-        model.addAttribute("menuDTO", menuDTO);
-        return ResponseEntity.ok().build(); // 응답 반환
+        MenuDTO menu = menuService.update(menuDTO);
+
+
+        List<String> delFiles = menuDTO.getDelFiles();
+        System.out.println("컨트롤러로 넘어온 삭제파일 List : " + delFiles);
+        if(delFiles != null) {
+            for (String storedFileName : delFiles){
+                menuService.deleteFile(storedFileName);
+            }
+        }
+
+        return "redirect:/menu/list";
     }
 
     @GetMapping(value = "/getFiles/{id}" , produces = {"application/json; charset=utf-8"})

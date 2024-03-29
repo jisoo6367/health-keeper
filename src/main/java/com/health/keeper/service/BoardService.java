@@ -102,7 +102,9 @@ public class BoardService {
     @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
-        //DB에서는 Entity로 넘겨주고 그것을 DTO로 바꿔서 가져가야함
+        //DB에서는 Entity로 넘겨주고 그것을 DTO로 바꿔서 가
+        // r
+        // 져가야함
         List<BoardDTO> boardDTOList = new ArrayList<>();
 
         for (BoardEntity boardEntity: boardEntityList){
@@ -130,6 +132,7 @@ public class BoardService {
         }
     }
 
+    @Transactional
     public BoardDTO update(BoardDTO boardDTO) {
         BoardEntity boardEntity = BoardEntity.touUpdateEntity(boardDTO);
         boardRepository.save(boardEntity);

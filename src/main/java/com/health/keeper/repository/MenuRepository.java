@@ -17,7 +17,7 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<MenuEntity, Long> {
 
 
-    List<MenuEntity> findByMenuWriter (@Param("menuWriter")String menuWriter);
+    List<MenuEntity> findByMenuWriterOrderByCreatedTime (@Param("menuWriter")String menuWriter);
 
     List<MenuEntity> findByMenuWriterAndCreatedTime
             (@Param("menuWriter")String menuWriter, @Param("createdTime") LocalDate createdTime);
