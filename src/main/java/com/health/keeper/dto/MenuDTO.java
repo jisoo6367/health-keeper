@@ -32,7 +32,6 @@ public class MenuDTO {
 
     private List<String> delFiles;
 
-
     // Entity -> DTO
     public static MenuDTO toMenuDTO(MenuEntity menuEntity){
         MenuDTO menuDTO = new MenuDTO();

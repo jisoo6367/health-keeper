@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -40,6 +42,25 @@ public class MenuController {
         List<MenuDTO> menuDTOList = menuService.findByMenuWriter(principal.getName());
 
         System.out.println("컨트롤러에서 menuDTOList = " + menuDTOList);
+
+        // 정렬
+        Collections.sort(menuDTOList, Comparator.comparing(MenuDTO::getMenuCategory,
+                Comparator.comparingInt(category -> {
+                    switch (category) {
+                        case "breakfast":
+                            return 0;
+                        case "lunch":
+                            return 1;
+                        case "dinner":
+                            return 2;
+                        case "snack":
+                            return 3;
+                        default:
+                            return Integer.MAX_VALUE;
+                    }
+                })));
+
+        System.out.println("정렬 후 menuDTOList = " + menuDTOList);
 
         model.addAttribute("menuList", menuDTOList);
         model.addAttribute("username", principal.getName());
@@ -66,6 +87,23 @@ public class MenuController {
         System.out.println("detail로 가는 컨트롤러에서 menuCreatedTime = " + menuCreatedTime);
         //MenuDTO menuDTO = menuService.findById(id);
         List<MenuDTO> menuDTOList = menuService.findByMenuWriterAndMenuCreatedTime(principal.getName(),menuCreatedTime);
+
+        // 정렬
+        Collections.sort(menuDTOList, Comparator.comparing(MenuDTO::getMenuCategory,
+                Comparator.comparingInt(category -> {
+                    switch (category) {
+                        case "breakfast":
+                            return 0;
+                        case "lunch":
+                            return 1;
+                        case "dinner":
+                            return 2;
+                        case "snack":
+                            return 3;
+                        default:
+                            return Integer.MAX_VALUE;
+                    }
+                })));
 
         System.out.println("컨트롤러에서 ========" + menuDTOList);
         model.addAttribute("menuList", menuDTOList);
