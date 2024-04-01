@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +26,33 @@ public class UserService {
 
         UserDTO userDTO = UserDTO.toUserDTO(userEntity);
         userDTO.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-        System.out.println("유저서비스에서 userDTO : " + userDTO);
+        System.out.println("유저서비스 findByUsername 에서 userDTO : " + userDTO);
         return userDTO;
     }
 
+    public UserDTO findById (Long id) {
+        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+
+        UserEntity userEntity = userEntityOptional.get();
+        UserDTO userDTO = UserDTO.toUserDTO(userEntity);
+        return userDTO;
+    }
+
+    public UserDTO update (UserDTO userDTO){
+
+        System.out.println("update 서비스- userDTO: " + userDTO);
+        //userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+
+        // DTO -> Entity
+        UserEntity userEntity = UserEntity.toUpdateEntity(userDTO);
+        System.out.println("update 서비스 - 엔티티타입으로 변환: " + userEntity);
+
+        userRepository.save(userEntity);
+        System.out.println("update 서비스에서 save(update)작동 후 : " + userEntity);
+
+
+
+        return findById(userDTO.getId());
+    }
 
 }

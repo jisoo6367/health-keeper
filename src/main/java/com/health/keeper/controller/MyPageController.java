@@ -21,11 +21,19 @@ public class MyPageController {
         System.out.println("principal.getName() : " + principal.getName());
 
         UserDTO userDTO = userService.findByUsername(principal);
-        System.out.println("유저 컨트롤러에서 결과 : " + userDTO);
+        System.out.println("유저 컨트롤러에서 main 결과 : " + userDTO);
 
         model.addAttribute("userDTO", userDTO);
         return "mypage";
     }
 
+    @PostMapping("/update")
+    public String update (UserDTO userDTO) {
+        System.out.println("수정 요청한 userDTO = " + userDTO);
+
+        UserDTO user = userService.update(userDTO);
+        System.out.println("컨트롤러에서 update 결과 user : " + user);
+        return "mypage";
+    }
 }
 

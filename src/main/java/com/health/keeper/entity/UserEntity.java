@@ -1,8 +1,11 @@
 package com.health.keeper.entity;
 
+import com.health.keeper.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Timestamp;
 
@@ -31,6 +34,7 @@ public class UserEntity {
     @CreationTimestamp
     private Timestamp createDate;
 
+
     @Builder
     public UserEntity(String username, String password, String email, String phone, String role, String provider, String providerId, Timestamp createDate) {
         this.username = username;
@@ -41,5 +45,22 @@ public class UserEntity {
         this.provider = provider;
         this.providerId = providerId;
         this.createDate = createDate;
+    }
+    // DTO를 Entity로
+    public static UserEntity toUpdateEntity(UserDTO userDTO){
+        UserEntity userEntity = new UserEntity();
+
+        //id 있으면 save아니고 update
+        userEntity.setId(userDTO.getId());
+        userEntity.setPassword(userDTO.getPassword());
+        userEntity.setUsername(userDTO.getUsername());
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setPhone(userDTO.getPhone());
+        userEntity.setRole(userDTO.getRole());
+        userEntity.setProvider(userDTO.getProvider());
+        userEntity.setProviderId(userDTO.getProviderId());
+        userEntity.setCreateDate(userDTO.getCreateDate());
+
+        return userEntity;
     }
 }
