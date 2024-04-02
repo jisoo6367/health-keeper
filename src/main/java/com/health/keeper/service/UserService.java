@@ -41,8 +41,8 @@ public class UserService {
     public UserDTO update (UserDTO userDTO){
 
         System.out.println("update 서비스- userDTO: " + userDTO);
-        //userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-
+        userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        System.out.println("비크립트확인 : " + userDTO.getPassword());
         // DTO -> Entity
         UserEntity userEntity = UserEntity.toUpdateEntity(userDTO);
         System.out.println("update 서비스 - 엔티티타입으로 변환: " + userEntity);

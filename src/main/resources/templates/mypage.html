@@ -17,17 +17,17 @@
 <form id="myForm" action="/mypage/update" method="post" >
   <input type="hidden" name="id" th:value="${userDTO.id}"><br>
   유저네임(아이디) : <input type="text" name="username" th:value="${userDTO.username}"><br>
+  비밀번호 : <input type="password" name="password" ><br>
   이메일 : <input type="text" name="email" th:value="${userDTO.email}"><br>
   전화번호 : <input type="text" name="phone" th:value="${userDTO.phone}"><br>
-  <input type="hidden" name="password" th:value="${userDTO.password}"><br>
   <input type="hidden" name="role" th:value="${userDTO.role}"><br>
   <input type="hidden" name="provider" th:value="${userDTO.provider}"><br>
   <input type="hidden" name="providerId" th:value="${userDTO.providerId}"><br>
   <input type="hidden" name="createDate" th:value="${userDTO.createDate}"><br>
   <input class="btn btn-outline-primary" type="submit" value="수정"/>
+  <button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 </form>
 
-<button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 </body>
 
 <script th:inline="javascript">
