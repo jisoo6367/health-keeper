@@ -28,7 +28,7 @@
             // 상위 세 동영상을 웹 페이지에 추가
             const playerDiv = document.getElementById('player');
             videoIds.forEach(videoId => {
-                playerDiv.innerHTML += `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+                playerDiv.innerHTML += `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe><br>`;
             });
         })
         .catch(error => console.error('Error fetching data:', error));

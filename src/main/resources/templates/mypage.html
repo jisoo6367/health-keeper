@@ -14,19 +14,24 @@
 <body>
 <h2>마이 페이지 메인</h2>
 
-<form id="myForm" action="/mypage/update" method="post" >
+<form id="userForm" action="/mypage/update" method="post" >
   <input type="hidden" name="id" th:value="${userDTO.id}"><br>
   유저네임(아이디) : <input type="text" name="username" th:value="${userDTO.username}"><br>
   비밀번호 : <input type="password" name="password" ><br>
   이메일 : <input type="text" name="email" th:value="${userDTO.email}"><br>
   전화번호 : <input type="text" name="phone" th:value="${userDTO.phone}"><br>
-  <input type="hidden" name="role" th:value="${userDTO.role}"><br>
-  <input type="hidden" name="provider" th:value="${userDTO.provider}"><br>
-  <input type="hidden" name="providerId" th:value="${userDTO.providerId}"><br>
+  관심운동 : <input type="text" name="interest" th:value="${userDTO.interest}"><br>
+  <input type="hidden" name="role" th:value="${userDTO.role}">
+  <input type="hidden" name="provider" th:value="${userDTO.provider}">
+  <input type="hidden" name="providerId" th:value="${userDTO.providerId}">
   <input type="hidden" name="createDate" th:value="${userDTO.createDate}"><br>
-  <input class="btn btn-outline-primary" type="submit" value="수정"/>
-  <button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 </form>
+<form id="exerciseForm" action="/exercise/update" method="post" >
+</form>
+
+
+<button type="button" class="btn btn-outline-primary" onclick="modify()">수정</button>
+<button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 
 </body>
 
@@ -36,6 +41,10 @@
       location.href = "/";
   }
 
+  //수정
+  const modify = () => {
+    document.getElementById("userForm").submit();
+  }
 
 </script>
 </html>

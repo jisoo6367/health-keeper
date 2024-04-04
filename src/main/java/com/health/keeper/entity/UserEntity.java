@@ -34,9 +34,11 @@ public class UserEntity {
     @CreationTimestamp
     private Timestamp createDate;
 
+    private String interest;
+
 
     @Builder
-    public UserEntity(String username, String password, String email, String phone, String role, String provider, String providerId, Timestamp createDate) {
+    public UserEntity(String username, String password, String email, String phone, String role, String provider, String providerId, Timestamp createDate, String interest) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -45,6 +47,7 @@ public class UserEntity {
         this.provider = provider;
         this.providerId = providerId;
         this.createDate = createDate;
+        this.interest = interest;
     }
     // DTO를 Entity로
     public static UserEntity toUpdateEntity(UserDTO userDTO){
@@ -60,6 +63,7 @@ public class UserEntity {
         userEntity.setProvider(userDTO.getProvider());
         userEntity.setProviderId(userDTO.getProviderId());
         userEntity.setCreateDate(userDTO.getCreateDate());
+        userEntity.setInterest(userDTO.getInterest());
 
         return userEntity;
     }

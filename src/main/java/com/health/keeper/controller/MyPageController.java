@@ -30,6 +30,7 @@ public class MyPageController {
     @PostMapping("/update")
     public String update (UserDTO userDTO) {
         System.out.println("수정 요청한 userDTO = " + userDTO);
+        System.out.println("interest : " + userDTO.getInterest());
 
         UserDTO user = userService.update(userDTO);
         System.out.println("컨트롤러에서 update 결과 user : " + user);

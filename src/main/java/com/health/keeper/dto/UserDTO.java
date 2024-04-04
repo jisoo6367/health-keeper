@@ -22,6 +22,7 @@ public class UserDTO {
     private String provider;
     private String providerId;
     private Timestamp createDate;
+    private String interest;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -39,6 +40,7 @@ public class UserDTO {
         userDTO.setProvider(userEntity.getProvider());
         userDTO.setProviderId(userEntity.getProviderId());
         userDTO.setCreateDate(userEntity.getCreateDate());
+        userDTO.setInterest(userEntity.getInterest());
 
         return userDTO;
     }
