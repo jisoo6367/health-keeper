@@ -38,7 +38,7 @@ public class UserService {
         return userDTO;
     }
 
-    public UserDTO update (UserDTO userDTO){
+    public Long update (UserDTO userDTO){
 
         System.out.println("update 서비스- userDTO: " + userDTO);
         userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
@@ -50,9 +50,7 @@ public class UserService {
         userRepository.save(userEntity);
         System.out.println("update 서비스에서 save(update)작동 후 : " + userEntity);
 
-
-
-        return findById(userDTO.getId());
+        return userDTO.getId();
     }
 
 }

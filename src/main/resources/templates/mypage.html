@@ -16,20 +16,16 @@
 
 <form id="userForm" action="/mypage/update" method="post" >
   <input type="hidden" name="id" th:value="${userDTO.id}"><br>
-  유저네임(아이디) : <input type="text" name="username" th:value="${userDTO.username}"><br>
-  비밀번호 : <input type="password" name="password" ><br>
-  이메일 : <input type="text" name="email" th:value="${userDTO.email}"><br>
-  전화번호 : <input type="text" name="phone" th:value="${userDTO.phone}"><br>
-  관심운동 : <input type="text" name="interest" th:value="${userDTO.interest}"><br>
+  유저네임(아이디) : <input type="text" name="username" id="username" th:value="${userDTO.username}"><br>
+  비밀번호 : <input type="password" name="password" id="password"><br>
+  이메일 : <input type="text" name="email" id="email" th:value="${userDTO.email}"><br>
+  전화번호 : <input type="text" name="phone" id="phone" th:value="${userDTO.phone}"><br>
+  관심운동 : <input type="text" name="interest" id="interest" th:value="${userDTO.interest}"><br>
   <input type="hidden" name="role" th:value="${userDTO.role}">
   <input type="hidden" name="provider" th:value="${userDTO.provider}">
   <input type="hidden" name="providerId" th:value="${userDTO.providerId}">
   <input type="hidden" name="createDate" th:value="${userDTO.createDate}"><br>
 </form>
-<form id="exerciseForm" action="/exercise/update" method="post" >
-</form>
-
-
 <button type="button" class="btn btn-outline-primary" onclick="modify()">수정</button>
 <button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 
@@ -41,10 +37,31 @@
       location.href = "/";
   }
 
+
   //수정
   const modify = () => {
-    document.getElementById("userForm").submit();
+    var username = $("#username").val();
+    var password = $("#password").val();
+
+    if (username.length == 0 || password.length == 0) {
+        alert("아이디와 비밀번호 입력은 필수입니다.");
+    } else {
+        document.getElementById("userForm").submit();
+    }
   }
+
+var result = [[${result}]];
+console.log(result);
+
+//결과 띄우기
+if ( result == "successModify" ) {
+	alert("회원정보가 수정되었습니다.");
+} else if ( result == "failModify" ) {
+	alert("회원정보 수정에 실패하였습니다.");
+}
+
+
+
 
 </script>
 </html>
