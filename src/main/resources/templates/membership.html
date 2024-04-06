@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <title>회원권</title>
+</head>
+<body>
+<h3>회원권</h3>
+
+<table th:each="membership: ${membership}">
+    <tr>
+        <th>티켓 이름</th>
+        <th>상태</th>
+        <th>횟수</th>
+        <th>기간</th>
+    </tr>
+    <tr>
+        <td th:text="${membership.name}"></td>
+        <td th:text="${membership.status}"></td>
+        <td th:text="${membership.amount}"></td>
+        <td th:text="${membership.period}"></td>
+
+    </tr>
+</table>
+
+<button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
+
+<script>
+    // 홈으로
+    const goHome = () => {
+    location.href = "/";
+    }
+</script>
+</body>
+</html>

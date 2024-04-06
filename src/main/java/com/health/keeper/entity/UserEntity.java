@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data //이거는 왜 붙이는거더라?
@@ -36,6 +38,9 @@ public class UserEntity {
 
     private String interest;
 
+    // 조인 부모테이블에서
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MembershipEntity> membershipEntityList = new ArrayList<>();
 
     @Builder
     public UserEntity(String username, String password, String email, String phone, String role, String provider, String providerId, Timestamp createDate, String interest) {
