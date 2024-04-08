@@ -6,9 +6,16 @@
     <title>Manager Service</title>
 </head>
 <body>
-<h3>센터 원장님 전용 페이지</h3>
+<h3>센터 원장님 전용 페이지</h3><br>
 
-
+<h5>특정 회원에게 회원권 부여</h5>
+<form action="/manager/save" method="post">
+회원님 연락처 : <input type="number" id="phone" name="phone"><br>
+회원권명 : <input type="text" id="name" name="name"><br>
+횟수 : <input type="text" id="amount" name="amount"><br>
+기간(일) : <input type="text" id="period" name="period">
+    <input class="btn btn-outline-info" type="submit" value="추가"/>
+</form>
 <button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
 
 <script>
