@@ -13,7 +13,13 @@
 회원님 연락처 : <input type="number" id="phone" name="phone"><br>
 회원권명 : <input type="text" id="name" name="name"><br>
 횟수 : <input type="text" id="amount" name="amount"><br>
-기간(일) : <input type="text" id="period" name="period">
+기간(일) : <input type="text" id="period" name="period"><br>
+사용여부 :<select id="status" name="status">
+            <option value="사용대기">사용대기</option>
+            <option value="사용중">사용중</option>
+            <option value="정지">정지</option>
+            <option value="사용완료">사용완료</option>
+        </select><br>
     <input class="btn btn-outline-info" type="submit" value="추가"/>
 </form>
 <button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>

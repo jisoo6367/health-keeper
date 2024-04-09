@@ -53,4 +53,13 @@ public class UserService {
         return userDTO.getId();
     }
 
+    public UserDTO findByPhone (String phone) {
+        UserEntity userEntity = userRepository.findByPhone(phone);
+
+        UserDTO userDTO = UserDTO.toUserDTO(userEntity);
+        System.out.println("유저서비스에서 userDTO : " + userDTO);
+
+        return userDTO;
+    }
+
 }

@@ -1,9 +1,12 @@
 package com.health.keeper.entity;
 
+import com.health.keeper.dto.MembershipDTO;
 import com.health.keeper.dto.MenuDTO;
+import com.health.keeper.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.JSONUtil;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -48,5 +51,23 @@ public class MembershipEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
+
+    public static MembershipEntity toSaveEntity(MembershipDTO membershipDTO, UserDTO userDTO){
+        MembershipEntity membershipEntity = new MembershipEntity();
+
+        UserEntity userEntity = UserEntity.toUpdateEntity(userDTO);
+        System.out.println("멤버쉽엔티티에서 userId 넣기위해 dto-> entity로 변환 : " + userEntity);
+
+        membershipEntity.setUserEntity(userEntity);
+        membershipEntity.setName(membershipDTO.getName());
+        membershipEntity.setAmount(membershipDTO.getAmount());
+        membershipEntity.setPeriod(membershipDTO.getPeriod());
+        membershipEntity.setStatus(membershipDTO.getStatus());
+        membershipEntity.setStart_date(membershipDTO.getStart_date());
+        membershipEntity.setEnd_date((membershipDTO.getStart_date()));
+
+        return membershipEntity;
+    }
+
 
 }

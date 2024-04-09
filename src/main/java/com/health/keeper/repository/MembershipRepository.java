@@ -13,4 +13,6 @@ public interface MembershipRepository extends JpaRepository<MembershipEntity, Lo
 
     List<MembershipEntity> findByUserEntityId (@Param("userId")Long userId);
 
+
+
 }

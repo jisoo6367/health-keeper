@@ -2,9 +2,11 @@ package com.health.keeper.service;
 
 import com.health.keeper.dto.MembershipDTO;
 import com.health.keeper.dto.MenuDTO;
+import com.health.keeper.dto.UserDTO;
 import com.health.keeper.entity.MembershipEntity;
 import com.health.keeper.entity.MenuEntity;
 import com.health.keeper.entity.MenuFileEntity;
+import com.health.keeper.entity.UserEntity;
 import com.health.keeper.repository.MembershipRepository;
 import com.health.keeper.repository.MenuFileRepository;
 import com.health.keeper.repository.MenuRepository;
@@ -61,13 +63,18 @@ public class MembershipService {
         for(MembershipEntity membershipEntity: membershipEntityList){
             membershipDTOList.add(MembershipDTO.toMembershipDTO(membershipEntity));
         }
-
-
-
-
-
         return membershipDTOList;
 
+    }
+
+    public void save(MembershipDTO membershipDTO, UserDTO userDTO) {
+        System.out.println("서비스에서 userDTO : "+ userDTO);
+
+
+
+        MembershipEntity membershipEntity = MembershipEntity.toSaveEntity(membershipDTO, userDTO);
+        System.out.println("서비스에서 membershipEntity : " + membershipEntity);
+        membershipRepository.save(membershipEntity);
     }
 
 

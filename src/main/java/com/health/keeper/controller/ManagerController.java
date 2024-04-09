@@ -3,6 +3,7 @@ package com.health.keeper.controller;
 import com.health.keeper.dto.MembershipDTO;
 import com.health.keeper.dto.UserDTO;
 import com.health.keeper.service.MembershipService;
+import com.health.keeper.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ import java.util.List;
 @Controller
 public class ManagerController {
 
+    private final MembershipService membershipService;
+    private final UserService userService;
+
     @GetMapping("/main")
     public String showManagerPage () {
 
@@ -32,6 +36,13 @@ public class ManagerController {
         System.out.println("폰번호 받아오나..? : " + user.getPhone());
         System.out.println("membership 정보 : " + membership);
         //폰정보로 userId가져와서 그걸로 membership테이블에 insert 해줘야함
+
+        UserDTO userDTO = userService.findByPhone(user.getPhone());
+        System.out.println("컨트롤러에서 userDTO.getId() :" + userDTO.getId());
+
+
+        membershipService.save(membership, userDTO);
+
 
         return "/manager";
     }
