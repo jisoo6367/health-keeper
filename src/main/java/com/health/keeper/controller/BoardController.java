@@ -153,4 +153,11 @@ public class BoardController {
 
         return "paging";
     }
+
+    @PostMapping("/search")
+    public String search(@RequestParam("searchType")String searchType){
+        System.out.println("서치 버튼 누른 후 컨트롤러");
+        System.out.println("searchType = " + searchType);
+        return "/";
+    }
 }
