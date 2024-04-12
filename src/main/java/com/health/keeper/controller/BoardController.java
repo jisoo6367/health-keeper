@@ -155,9 +155,10 @@ public class BoardController {
     }
 
     @PostMapping("/search")
-    public String search(@RequestParam("searchType")String searchType){
+    public String search(BoardDTO boardDTO){
         System.out.println("서치 버튼 누른 후 컨트롤러");
-        System.out.println("searchType = " + searchType);
-        return "/";
+        System.out.println("boardDTO = " + boardDTO);
+        System.out.println("boardDTO = " + boardDTO.getSearchType());
+        return "redirect:/board/paging";
     }
 }
