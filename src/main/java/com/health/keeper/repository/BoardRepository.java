@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
@@ -18,5 +20,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     // :콜론뒤 id는 @Param("이거")
     @Modifying // update,delete 쿼리를 작성할때는 @Modifying 어노테이션 필수
     void updateHits(@Param("id") Long id);
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword%")
+    List<BoardEntity> findByBoardContentsContaining(@Param("keyword") String keyword);
 
 }
