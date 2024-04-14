@@ -130,11 +130,23 @@ public class BoardController {
 
     // /board/paging?page=1
     @GetMapping("/paging")
-    public String paging(@PageableDefault(page=1) Pageable pageable, Model model){
+    public String paging(@PageableDefault(page=1) Pageable pageable, Model model,
+                         @RequestParam(value = "searchValue", required = false) String keyword){
         // Pageable 인터페이스는 springframework.data.domain로 임포트/ java.awt.print 아님
 
+        Page<BoardDTO> boardList;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            boardList = boardService.searchAndPaging(keyword, pageable);
+            model.addAttribute("keyword", keyword);
+        } else {
+            boardList = boardService.paging(pageable);
+        }
+
+
+
     //    pageable.getPageNumber();
-        Page<BoardDTO> boardList = boardService.paging(pageable);
+    //    Page<BoardDTO> boardList = boardService.paging(pageable);
 
         //페이징 몇 쪽씩 보여줄건지 ex) << 1 2 3 >> / << 4 5 6 >>
         int blockLimit = 3;
@@ -151,14 +163,8 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
+
         return "paging";
     }
 
-    @PostMapping("/search")
-    public String search(BoardDTO boardDTO){
-        System.out.println("서치 버튼 누른 후 컨트롤러");
-        System.out.println("boardDTO = " + boardDTO);
-        System.out.println("boardDTO = " + boardDTO.getSearchType());
-        return "redirect:/board/paging";
-    }
 }
