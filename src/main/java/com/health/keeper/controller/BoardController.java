@@ -131,17 +131,27 @@ public class BoardController {
     // /board/paging?page=1
     @GetMapping("/paging")
     public String paging(@PageableDefault(page=1) Pageable pageable, Model model,
-                         @RequestParam(value = "searchValue", required = false) String keyword){
+                         BoardDTO boardDTO){
+                         //@RequestParam(value = "searchValue", required = false) String keyword){
         // Pageable 인터페이스는 springframework.data.domain로 임포트/ java.awt.print 아님
+
+
+        String keyword = boardDTO.getSearchValue();
+        String type = boardDTO.getSearchType();
 
         Page<BoardDTO> boardList;
 
         if (keyword != null && !keyword.isEmpty()) {
-            boardList = boardService.searchAndPaging(keyword, pageable);
+            boardList = boardService.searchAndPaging(type, keyword, pageable);
+            model.addAttribute("type", type);
             model.addAttribute("keyword", keyword);
         } else {
             boardList = boardService.paging(pageable);
-        }
+        };
+
+
+
+
 
 
 

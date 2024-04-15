@@ -167,9 +167,20 @@ public class BoardService {
         // Page 인터페이스에서 제공해주는 map 메서드를 이용하여 Entity를 DTO 객체로 바꿔줌
         return boardDTOS;
     }
-    public Page<BoardDTO> searchAndPaging(String keyword, Pageable pageable) {
-        // 게시글 검색
-        List<BoardEntity> searchResults = boardRepository.findByBoardContentsContaining(keyword);
+    public Page<BoardDTO> searchAndPaging(String type, String keyword, Pageable pageable) {
+
+        List<BoardEntity> searchResults = null;
+
+        if (type.equals("boardTitle")){
+            searchResults = boardRepository.findByBoardTitleContaining(keyword);
+        } else if (type.equals("boardContents")){
+            searchResults = boardRepository.findByBoardContentsContaining(keyword);
+        } else if (type.equals("boardWriter")){
+            searchResults = boardRepository.findByBoardWriterContaining(keyword);
+        }
+
+
+
 
         // 검색된 게시글을 페이징
         int page = pageable.getPageNumber() - 1;

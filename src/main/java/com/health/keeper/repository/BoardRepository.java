@@ -24,4 +24,10 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword%")
     List<BoardEntity> findByBoardContentsContaining(@Param("keyword") String keyword);
 
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardTitle LIKE %:keyword%")
+    List<BoardEntity> findByBoardTitleContaining(@Param("keyword") String keyword);
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardWriter LIKE %:keyword%")
+    List<BoardEntity> findByBoardWriterContaining(@Param("keyword") String keyword);
+
 }
