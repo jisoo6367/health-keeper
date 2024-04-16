@@ -150,11 +150,6 @@ public class BoardController {
         };
 
 
-
-
-
-
-
     //    pageable.getPageNumber();
     //    Page<BoardDTO> boardList = boardService.paging(pageable);
 
@@ -173,6 +168,11 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
+        System.out.println("컨트롤러에서 " + boardList.getContent());
+
+        model.addAttribute("keyword" , keyword);
+        model.addAttribute("type" , type);
+        System.out.println("keyword 살아있나 " + keyword +", " + type);
 
         return "paging";
     }

@@ -26,6 +26,7 @@
                                         <option value="boardTitle">제목</option>
                                         <option value="boardContents">본문</option>
                                         <option value="boardWriter">작성자</option>
+                                        <option value="boardTitleAndBoardContents">제목+본문</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-8 col-md-6 col-sm-12 p-0">
@@ -93,7 +94,9 @@
             <span class="page-link" th:if="${page == boardList.number +1}" th:text="${page}"></span>
             <!-- 현재 페이지 번호가 아닌 다른 페이지 번호는 링크 -->
             <span class="page-link" th:unless="${page == boardList.number + 1}">
-                <a th:href="@{/board/paging(page=${page})}" th:text="${page}"></a></span>
+                <a th:if="${type == null}" th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+                <a th:if="${type != null}" th:href="@{/board/paging(page=${page}, searchType=${type}, searchValue=${keyword})}" th:text="${page}"></a>
+            </span>
         </span>
         <!-- 다음 링크 활성화 비활성화 -->
         <li class="page-item"><a class="page-link" th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}">다음</a></li>

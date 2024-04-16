@@ -142,6 +142,8 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
+
+
     public Page<BoardDTO> paging(Pageable pageable) {
 
         int page = pageable.getPageNumber() -1;
@@ -167,37 +169,41 @@ public class BoardService {
         // Page 인터페이스에서 제공해주는 map 메서드를 이용하여 Entity를 DTO 객체로 바꿔줌
         return boardDTOS;
     }
+
+
+
     public Page<BoardDTO> searchAndPaging(String type, String keyword, Pageable pageable) {
+        Page<BoardEntity> boardEntities;
 
-        List<BoardEntity> searchResults = null;
-
-        if (type.equals("boardTitle")){
-            searchResults = boardRepository.findByBoardTitleContaining(keyword);
-        } else if (type.equals("boardContents")){
-            searchResults = boardRepository.findByBoardContentsContaining(keyword);
-        } else if (type.equals("boardWriter")){
-            searchResults = boardRepository.findByBoardWriterContaining(keyword);
-        }
-
-
-
-
-        // 검색된 게시글을 페이징
-        int page = pageable.getPageNumber() - 1;
+        int page = pageable.getPageNumber() -1;
         int pageLimit = 3; // 한 페이지당 게시글 수
-        int start = page * pageLimit;
-        int end = Math.min(start + pageLimit, searchResults.size());
-        List<BoardEntity> pagedResults = searchResults.subList(start, end);
 
-        // 페이지 정보를 담은 DTO 리스트 생성
-        List<BoardDTO> boardDTOS = pagedResults.stream()
-                .map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()))
-                .collect(Collectors.toList());
+        if (type.equals("boardTitle")) {
+            boardEntities = boardRepository.findByBoardTitleContaining(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC,"id")));
+        } else if (type.equals("boardContents")) {
+            boardEntities = boardRepository.findByBoardContentsContaining(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC,"id")));
+        } else if (type.equals("boardWriter")) {
+            boardEntities = boardRepository.findByBoardWriterContaining(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC,"id")));
+        } else if (type.equals("boardTitleAndBoardContents")) {
+            boardEntities = boardRepository.findByBoardContentsAndBoardTitleContaining(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC,"id")));
+        } else {
+            // 예외 처리 또는 기본값 설정
+            return Page.empty(); // 혹은 다른 적절한 처리
+        }
+        System.out.println("서비스에서 처리결과 " + boardEntities);
 
-        // 전체 페이지 수 계산
-        int totalPages = (int) Math.ceil((double) searchResults.size() / pageLimit);
+        // 페이지 번호를 1로 시작하도록 조정
+        int pageNumber = pageable.getPageNumber() + 1;
+        Pageable adjustedPageable = PageRequest.of(pageNumber - 1, pageable.getPageSize(), pageable.getSort());
 
-        return new PageImpl<>(boardDTOS, pageable, searchResults.size());
+
+        Page<BoardDTO> boardDTOS =
+                boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
+        // Page 인터페이스에서 제공해주는 map 메서드를 이용하여 Entity를 DTO 객체로 바꿔줌
+
+        System.out.println("서비스 결과 boardDTOS : " + boardDTOS);
+        return boardDTOS;
     }
+
 
 }
