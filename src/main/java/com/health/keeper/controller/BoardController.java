@@ -2,7 +2,10 @@ package com.health.keeper.controller;
 
 import com.health.keeper.dto.BoardDTO;
 import com.health.keeper.dto.CommentDTO;
+import com.health.keeper.dto.MenuDTO;
+import com.health.keeper.entity.BoardEntity;
 import com.health.keeper.entity.CommentEntity;
+import com.health.keeper.entity.MenuEntity;
 import com.health.keeper.service.BoardService;
 import com.health.keeper.service.CommentService;
 import com.health.keeper.service.FileUploadService;
@@ -11,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -78,16 +83,40 @@ public class BoardController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable("id") Long id, Model model){
+    public String updateForm(@PathVariable("id") Long id, @RequestParam("page") String page, Model model){
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("boardUpdate", boardDTO);
+        model.addAttribute("page", page);
+        System.out.println("수정페이지갈때 페이지 넘어오는지 : " + page);
         return "update";
     }
 
     @PostMapping("/update")
-    public String update (@ModelAttribute BoardDTO boardDTO, Model model){
+    public String update (@ModelAttribute BoardDTO boardDTO, @RequestParam("page") String page, Model model) throws IOException {
         BoardDTO board = boardService.update(boardDTO);
+
+        List<String> delFiles = boardDTO.getDelFiles();
+        System.out.println("컨트롤러로 넘어온 삭제파일 List : " + delFiles);
+        if(delFiles != null) {
+            for (String storedFileName : delFiles){
+                boardService.deleteFile(storedFileName);
+
+                File file = new File("C:\\springboot_img\\board\\" + storedFileName);
+                boolean deleted = file.delete();
+                if (deleted) {
+                    System.out.println("파일 삭제 성공: " + storedFileName);
+                } else {
+                    System.out.println("파일 삭제 실패: " + storedFileName);
+                }
+
+            }
+        }
+
+        System.out.println("디테일로넘어가기직전 컨트롤러 " + boardDTO.getFileAttached());
+        System.out.println("========" + boardDTO.getStoredFileName());
+
         model.addAttribute("board", board);
+        model.addAttribute("page", page);
         return "detail";
         //return "redirect:/board/" + boardDTO.getId();
         // 이렇게 상세페이지로 가게하면, 수정만해도 조회수가 오르게 됨
@@ -176,5 +205,18 @@ public class BoardController {
 
         return "paging";
     }
+
+
+
+
+    @GetMapping(value = "/getFiles/{id}" , produces = {"application/json; charset=utf-8"})
+    public @ResponseBody ResponseEntity<List<BoardDTO>> showAttachFiles(@PathVariable("id") BoardEntity boardEntity){
+        System.out.println("첨부파일 가져오는 컨트롤러 ======");
+
+        ResponseEntity<List<BoardDTO>> boardDTO = new ResponseEntity<List<BoardDTO>>(boardService.getAttachFileList(boardEntity), HttpStatus.OK);
+        System.out.println("첨파가져오는 컨트롤러에서 boardDTO  : " + boardDTO);
+        return new ResponseEntity<List<BoardDTO>>(boardService.getAttachFileList(boardEntity), HttpStatus.OK);
+    }
+
 
 }

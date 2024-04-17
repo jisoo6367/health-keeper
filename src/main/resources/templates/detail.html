@@ -87,7 +87,8 @@
     const updateReq = () => {
         console.log("수정 요청");
         const id = [[${board.id}]];
-        location.href = "/board/update/" + id;
+        const page = [[${page}]];
+        location.href = "/board/update/" + id + "?page=" + page;
     }
 
     const deleteReq = () => {

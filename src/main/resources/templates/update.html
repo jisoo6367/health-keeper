@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -7,14 +7,39 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
 </head>
 <body>
-<form action="/board/update" method="post" name="updateForm">
+<form action="/board/update" method="post" name="updateForm" enctype="multipart/form-data">
     <input type="hidden" name="id" th:value="${boardUpdate.id}">
     writer : <input type="text" name="boardWriter" th:value="${boardUpdate.boardWriter}" readonly><br>
     pass : <input type="text" name="boardPass" id="boardPass"><br>
     title : <input type="text" name="boardTitle" th:value="${boardUpdate.boardTitle}" ><br>
     contents : <textarea name="boardContents" cols="30" rows="10" th:text="${boardUpdate.boardContents}"></textarea><br>
     <input type="hidden" name="boardHits" th:value="${boardUpdate.boardHits}">
+    <input type="hidden" name="page" th:value="${page}">
+
+    <!-- 첨부파일 결과 표시 -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong style="font-size:16px;">첨부 파일</strong>
+                </div><!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="form-group uploadDiv">
+                        <input id="inputFile" type="file" name="boardFile" formenctype="multipart/form-data" multiple /><br>
+                    </div>
+                    <div class="form-group fileUploadResult">
+                        <ul style="list-style-type: none;">
+                            <!-- 업로드 후 처리결과가 표시될 영역 -->
+                        </ul>
+                    </div><!-- /.fileUploadResult -->
+                </div><!-- /.panel-body -->
+            </div><!-- /.panel -->
+        </div><!-- /.col-lg-12 -->
+    </div><!-- /.row -->
+    <input type="hidden" id="delFiles" name="delFiles">
+
     <button type="button" class="btn btn-outline-primary" onclick="boardUpdate()">수정</button>
+    <button type="button" class="btn btn-outline-danger" onclick="goToDetail()">취소</button>
 </form>
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -27,11 +52,108 @@
         console.log(inputPass);
 
         if (pass == inputPass){
+            // 숨겨진 입력란 가져오기
+            const hiddenInput = document.getElementById('delFiles');
+
+            // 배열을 쉼표로 구분된 문자열로 변환하여 숨겨진 입력란의 값으로 설정
+            hiddenInput.value = deletedFiles.join(',');
+
             document.updateForm.submit();
         }else {
             alert("비밀번호가 일치하지 않습니다.");
         }
     }
+
+    const id = [[${boardUpdate.id}]];
+    const page = [[${page}]];
+    console.log(page);
+
+
+    const goToDetail = () => {
+        location.href = "/board/" + id;
+    }
+
+
+
+
+
+
+    //삭제 눌릴 때 마다 변수에 담은 후 화면단에서 안보이게
+    //배열 초기화
+    let deletedFiles = [];
+    function deleteFile() {
+        console.log("딜리트파일 함수");
+        const listItem = event.target.parentElement;
+        console.log(listItem);
+
+        const fileName = listItem.querySelector('input[type="hidden"]').value;
+        console.log(fileName);
+
+        deletedFiles.push(fileName);
+
+        listItem.remove();
+    };
+
+
+
+
+
+
+    //수정페이지의 게시물 표시 후, ajax로 첨부파일 정보를 가져오는 함수를 작성
+	function getAttachFileInfo(){
+
+        console.log("겟어태치파일 함수작동");
+		$.ajax({
+
+		type:"get" ,
+		url: "/board/getFiles/" + id ,
+		dataType: "json" ,
+        success: function(uploadResult) {
+            console.log("ajax 요청 성공");
+            showUploadResult(uploadResult) ;
+        },
+        error: function(xhr, status, error) {
+            console.error("요청 실패:", error);
+        }
+		});
+	}
+
+	$(document).ready(function(){
+	    getAttachFileInfo();
+	}) ;
+
+
+    //a.jax로 가져온 첨파결과
+    function showUploadResult(uploadResult) {
+
+		var fileUploadResult = $(".fileUploadResult ul") ;
+		var htmlStr = "";
+
+		if(!uploadResult || uploadResult.length == 0) {
+
+			htmlStr +="<li style='font-size: 12pt;'>첨부파일이 없습니다</li>"
+
+		} else {
+            const storedFileNames = [[${boardUpdate.storedFileName}]];
+            console.log(storedFileNames);
+
+            storedFileNames.forEach(function(storedFileName) {
+            htmlStr += "<li>"
+                    + "<input type='hidden' id='"+ storedFileName+ "' value='"+ storedFileName +"' name='storedFileName'>"
+                    + "<img src='/board/upload/" + storedFileName + "' alt='' style='width:100px; height:100px;'>"
+                    + "<a href='#' onclick='deleteFile()'>삭제</a>"
+                    + "</li>";
+            });
+		}
+
+		fileUploadResult.append(htmlStr) ;
+
+	}
+
+
+
+
+
 
 
 

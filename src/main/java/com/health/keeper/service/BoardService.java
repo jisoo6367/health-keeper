@@ -1,8 +1,11 @@
 package com.health.keeper.service;
 
 import com.health.keeper.dto.BoardDTO;
+import com.health.keeper.dto.MenuDTO;
 import com.health.keeper.entity.BoardEntity;
 import com.health.keeper.entity.BoardFileEntity;
+import com.health.keeper.entity.MenuEntity;
+import com.health.keeper.entity.MenuFileEntity;
 import com.health.keeper.repository.BoardFileRepository;
 import com.health.keeper.repository.BoardRepository;
 import jakarta.transaction.Transactional;
@@ -131,7 +134,23 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDTO update(BoardDTO boardDTO) {
+    public BoardDTO update(BoardDTO boardDTO) throws IOException {
+
+        for (MultipartFile file : boardDTO.getBoardFile()) {
+            if (file != null && !file.isEmpty()) {
+                System.out.println("수정 서비스 추가하는 첨파 있을 때");
+
+                BoardEntity board = boardRepository.findById(boardDTO.getId()).get();
+                String originalFilename = file.getOriginalFilename();
+                String storedFileName = System.currentTimeMillis()+ "_" + originalFilename;
+                String savePath = "C:/springboot_img/board/" + storedFileName;
+                file.transferTo(new File(savePath));
+
+                BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+                boardFileRepository.save(boardFileEntity);
+            }
+        }
+
         BoardEntity boardEntity = BoardEntity.touUpdateEntity(boardDTO);
         boardRepository.save(boardEntity);
         //save메서드가 insert와 update를 다 해줌. id값이 있냐없냐의 차이
@@ -142,7 +161,11 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-
+    @Transactional
+    public void deleteFile(String storedFileName) {
+        boardFileRepository.deleteByStoredFileName(storedFileName);
+        System.out.println("파일 삭제 서비스 도착");
+    }
 
     public Page<BoardDTO> paging(Pageable pageable) {
 
@@ -205,5 +228,20 @@ public class BoardService {
         return boardDTOS;
     }
 
+
+
+    public List<BoardDTO> getAttachFileList(BoardEntity boardEntity){
+
+        List<BoardFileEntity> boardFileEntityList = boardFileRepository.findAllByBoardEntity(boardEntity);
+        System.out.println("첨부파일조회하는 서비스에서 첨파 엔티티리스트: "+ boardFileEntityList);
+
+        //Entity -> DTOList
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for(BoardFileEntity boardFileEntity: boardFileEntityList){
+            boardDTOList.add(BoardDTO.toBoardDTO(boardFileEntity));
+        }
+        System.out.println("서비스에서 첨부파일 DTO 리스트 : " + boardDTOList);
+        return boardDTOList;
+    }
 
 }

@@ -2,11 +2,13 @@ package com.health.keeper.dto;
 
 import com.health.keeper.entity.BoardEntity;
 import com.health.keeper.entity.BoardFileEntity;
+import com.health.keeper.entity.MenuFileEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class BoardDTO {
     private List<String> originalFileName;
     private List<String> storedFileName; // 서버 저장용 파일 이름
     private int fileAttached; // 파일 첨부 여부 (첨부: 1 , 미첨부: 0)
+    private List<String> delFiles;
 
     private String searchType;
     private String searchValue;
@@ -84,4 +87,19 @@ public class BoardDTO {
 
         return boardDTO;
     }
+
+
+    // update 페이지에서 첨부파일 보여주기위한
+    // Entity -> DTO
+    public static BoardDTO toBoardDTO(BoardFileEntity boardFileEntity){
+        BoardDTO boardDTO = new BoardDTO();
+
+        boardDTO.setId(boardFileEntity.getId());
+        boardDTO.setOriginalFileName(Collections.singletonList(boardFileEntity.getOriginalFileName()));
+        boardDTO.setStoredFileName(Collections.singletonList(boardFileEntity.getStoredFileName()));
+
+        return boardDTO;
+
+    };
+
 }
