@@ -40,14 +40,14 @@ public class MenuService {
     //서비스에서는 결국 DTO -> Entity 변환 또는 Entity -> DTO변환을 해야하게됨
     public void save(MenuDTO menuDTO) throws IOException {
 
-            //if(menuDTO.getFileAttached() == 0){
-            if(menuDTO.getMenuFile().isEmpty()){
-                System.out.println("서비스의 이프절인지");
+
+        for (MultipartFile file : menuDTO.getMenuFile()) {
+            if (file.getSize() == 0) {
+                System.out.println("첨부파일 없을 때");
                 MenuEntity menuEntity = MenuEntity.toSaveEntity(menuDTO);
                 menuRepository.save(menuEntity);
-
-            } else{
-                System.out.println("서비스의 엘스절인지");
+            } else {
+                System.out.println("첨부파일 있을 때");
 
                 MenuEntity menuEntity = MenuEntity.toSaveFileEntity(menuDTO);
                 //메뉴테이블에 올리고 게시글의 번호 가져오기
@@ -58,9 +58,9 @@ public class MenuService {
                 System.out.println("거기에 .get() = " + menu);
                 //com.health.keeper.entity.MenuEntity@2054b41c
 
-                for(MultipartFile menuFile : menuDTO.getMenuFile()){
+                for(MultipartFile menuFile : menuDTO.getMenuFile()) {
                     String originalFilename = menuFile.getOriginalFilename();
-                    String storedFileName = System.currentTimeMillis()+ "_" + originalFilename;
+                    String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
                     String savePath = "C:/springboot_img/menu/" + storedFileName;
                     menuFile.transferTo(new File(savePath));
 
@@ -68,6 +68,8 @@ public class MenuService {
                     menuFileRepository.save(menuFileEntity);
                 }
             }
+        }
+
     }//save메서드-end
 
     @Transactional

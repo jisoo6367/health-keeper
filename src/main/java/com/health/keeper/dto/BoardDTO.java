@@ -95,6 +95,7 @@ public class BoardDTO {
         BoardDTO boardDTO = new BoardDTO();
 
         boardDTO.setId(boardFileEntity.getId());
+        boardDTO.setBoardCreatedTime(boardFileEntity.getCreatedTime());
         boardDTO.setOriginalFileName(Collections.singletonList(boardFileEntity.getOriginalFileName()));
         boardDTO.setStoredFileName(Collections.singletonList(boardFileEntity.getStoredFileName()));
 

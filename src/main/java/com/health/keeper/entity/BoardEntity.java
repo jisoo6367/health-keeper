@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,11 @@ public class BoardEntity extends BaseEntity{
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CommentEntity> commentEntityList = new ArrayList<>();
 
+
+
+
+
+
     // DTO -> Entity 변환작업
     public static BoardEntity toSaveEntity(BoardDTO boardDTO){
         BoardEntity boardEntity = new BoardEntity();
@@ -69,6 +75,13 @@ public class BoardEntity extends BaseEntity{
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
+        boardEntity.setFileAttached(boardDTO.getFileAttached());
+
+        boardEntity.setCreatedTime(boardDTO.getBoardCreatedTime());
+        boardEntity.setUpdatedTime(LocalDateTime.now());
+
+
+
         return boardEntity;
     }
 

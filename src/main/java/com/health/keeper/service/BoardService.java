@@ -35,15 +35,22 @@ public class BoardService {
 
     private final BoardFileRepository boardFileRepository;
 
+
     public void save(BoardDTO boardDTO) throws IOException {
 
-        // 파일 첨부 여부에 따라 로직 분리해야함
-        if(boardDTO.getBoardFile().isEmpty()){
-            System.out.println("첨부파일 없을 때");
-            BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-            boardRepository.save(boardEntity); //save 메서드는 매개변수로 Entity를 줘야하고, 리턴도 Entity 타입으로 된다.
-        }else{
-            System.out.println("첨부 파일 있을 때");
+        for (MultipartFile file : boardDTO.getBoardFile()) {
+            System.out.println("==========파일객체 = " + file);
+            System.out.println("========== .getName= " + file.getName()); // boardFile
+            System.out.println("========== .getOriginalFilename= " + file.getOriginalFilename()); // 안나옴
+            System.out.println("========== .getSize= " + file.getSize()); // 0
+
+            if (file.getSize() == 0) {
+                System.out.println("첨부파일 없을 때");
+                BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+                boardRepository.save(boardEntity); //save 메서드는 매개변수로 Entity를 줘야하고, 리턴도 Entity 타입으로 된다.
+            } else {
+
+                System.out.println("첨부 파일 있을 때");
             /*
                 1. DTO에 담긴 파일을 꺼냄
                 2. 파일의 이름을 가져옴
@@ -72,28 +79,30 @@ public class BoardService {
             */
 
 
-            // 다중 파일 업로드로 바꾸면서 부모데이터가 먼저 저장이 되어야 해서 순서가 바뀌게됨
-            BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
-            //DB에 저장하기 전이라서 boardEntity에는 Id 값이 없음
-            Long saveId = boardRepository.save(boardEntity).getId(); //게시글의 번호
-            BoardEntity board = boardRepository.findById(saveId).get();
-            System.out.println("=====그냥 findById(게시글번호) : "+ boardRepository.findById(saveId));
-            //Optional[com.health.keeper.entity.BoardEntity@782dd072]
-            System.out.println("=====거기에 .get() : " + board);
-            //com.health.keeper.entity.BoardEntity@3eb2fc9e
+                // 다중 파일 업로드로 바꾸면서 부모데이터가 먼저 저장이 되어야 해서 순서가 바뀌게됨
+                BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
+                //DB에 저장하기 전이라서 boardEntity에는 Id 값이 없음
+                Long saveId = boardRepository.save(boardEntity).getId(); //게시글의 번호
+                BoardEntity board = boardRepository.findById(saveId).get();
+                System.out.println("=====그냥 findById(게시글번호) : " + boardRepository.findById(saveId));
+                //Optional[com.health.keeper.entity.BoardEntity@782dd072]
+                System.out.println("=====거기에 .get() : " + board);
+                //com.health.keeper.entity.BoardEntity@3eb2fc9e
 
-            for(MultipartFile boardFile: boardDTO.getBoardFile()) { // 1
-                String originalFilename = boardFile.getOriginalFilename(); // 2
-                String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3
-                String savePath = "C:/springboot_img/board/" + storedFileName; // 4
-                boardFile.transferTo(new File(savePath)); // 5 파일 저장까지만 완료
-                //add exception처리하면 컨트롤러의 save도 빨간줄 동일처리해줘야함
+                for (MultipartFile boardFile : boardDTO.getBoardFile()) { // 1
+                    String originalFilename = boardFile.getOriginalFilename(); // 2
+                    String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3
+                    String savePath = "C:/springboot_img/board/" + storedFileName; // 4
+                    boardFile.transferTo(new File(savePath)); // 5 파일 저장까지만 완료
+                    //add exception처리하면 컨트롤러의 save도 빨간줄 동일처리해줘야함
 
-                // 파일 엔티티로 변환하기 위한 작업
-                BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
-                boardFileRepository.save(boardFileEntity);
-            }//for-end
-        }// else-end
+                    // 파일 엔티티로 변환하기 위한 작업
+                    BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+                    boardFileRepository.save(boardFileEntity);
+                } //내부 for-end
+
+            }// else-end
+        }// for-end
     }//save메서드-end
 
 
@@ -192,6 +201,7 @@ public class BoardService {
         // Page 인터페이스에서 제공해주는 map 메서드를 이용하여 Entity를 DTO 객체로 바꿔줌
         return boardDTOS;
     }
+
 
 
 

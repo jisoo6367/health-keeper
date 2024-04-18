@@ -48,6 +48,7 @@ public class BoardController {
     public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
     //public String save(@ModelAttribute BoardDTO boardDTO, @RequestPart("boardFile")MultipartFile image) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
+        System.out.println("boardDTO = " + boardDTO.getBoardFile());
         boardService.save(boardDTO);
         //fileUploadService.uploadImageToImgBB(boardFile);
         //fileUploadService.uploadImage(image);
@@ -93,6 +94,7 @@ public class BoardController {
 
     @PostMapping("/update")
     public String update (@ModelAttribute BoardDTO boardDTO, @RequestParam("page") String page, Model model) throws IOException {
+
         BoardDTO board = boardService.update(boardDTO);
 
         List<String> delFiles = boardDTO.getDelFiles();
@@ -112,8 +114,11 @@ public class BoardController {
             }
         }
 
-        System.out.println("디테일로넘어가기직전 컨트롤러 " + boardDTO.getFileAttached());
-        System.out.println("========" + boardDTO.getStoredFileName());
+
+        System.out.println("컨트롤러 update 결과 : " + board);
+        //BoardDTO(id=65, boardWriter=찐, boardPass=1234, boardTitle=첨파없이, boardContents=사이즈로 구분, boardHits=2, boardCreatedTime=2024-04-17T12:31:01.424787, boardUpdatedTime=2024-04-17T13:05:13.343654, boardFile=null, originalFileName=null, storedFileName=null, fileAttached=0, delFiles=null, searchType=null, searchValue=null)
+        System.out.println("디테일로넘어가기직전 컨트롤러 " + board.getBoardFile());
+        System.out.println("========" + board.getStoredFileName());
 
         model.addAttribute("board", board);
         model.addAttribute("page", page);

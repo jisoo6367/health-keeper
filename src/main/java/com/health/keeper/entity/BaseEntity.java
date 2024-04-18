@@ -17,6 +17,7 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
+@Setter
 public class BaseEntity {
     @CreationTimestamp
     //@Column(updatable = false)
@@ -26,4 +27,8 @@ public class BaseEntity {
     @UpdateTimestamp
     @Column
     private LocalDateTime updatedTime;
+
+
+
+
 }
