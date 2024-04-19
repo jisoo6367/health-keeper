@@ -43,22 +43,24 @@ public class MenuController {
 
         System.out.println("컨트롤러에서 menuDTOList = " + menuDTOList);
 
-        // 정렬
-        Collections.sort(menuDTOList, Comparator.comparing(MenuDTO::getMenuCategory,
-                Comparator.comparingInt(category -> {
-                    switch (category) {
-                        case "breakfast":
-                            return 0;
-                        case "lunch":
-                            return 1;
-                        case "dinner":
-                            return 2;
-                        case "snack":
-                            return 3;
-                        default:
-                            return Integer.MAX_VALUE;
-                    }
-                })));
+        // 날짜별로 먼저 정렬
+        Collections.sort(menuDTOList, Comparator.comparing(MenuDTO::getMenuCreatedTime)
+                .thenComparing(Comparator.comparing(MenuDTO::getMenuCategory,
+                        Comparator.comparingInt(category -> {
+                            switch (category) {
+                                case "breakfast":
+                                    return 0;
+                                case "lunch":
+                                    return 1;
+                                case "dinner":
+                                    return 2;
+                                case "snack":
+                                    return 3;
+                                default:
+                                    return Integer.MAX_VALUE;
+                            }
+                        })))
+                );
 
         System.out.println("정렬 후 menuDTOList = " + menuDTOList);
 

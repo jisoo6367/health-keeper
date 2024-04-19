@@ -163,6 +163,10 @@ public class BoardService {
         BoardEntity boardEntity = BoardEntity.touUpdateEntity(boardDTO);
         boardRepository.save(boardEntity);
         //save메서드가 insert와 update를 다 해줌. id값이 있냐없냐의 차이
+
+
+        System.out.println("=====보드서비스 업데이트에서 결과물 보드엔티티 : " +boardEntity.getFileAttached());
+        System.out.println("=====그리고 boardDTO : " + boardDTO);
         return findById(boardDTO.getId());
     }
 
