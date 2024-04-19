@@ -9,6 +9,8 @@ import com.health.keeper.entity.MenuEntity;
 import com.health.keeper.service.BoardService;
 import com.health.keeper.service.CommentService;
 import com.health.keeper.service.FileUploadService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RequestMapping("/board")
 @RequiredArgsConstructor //서비스를 호출해야해서 붙이는 어노테이션?
@@ -58,7 +62,6 @@ public class BoardController {
     @GetMapping("/")
     public String findAll(Model model){
         List<BoardDTO> boardDTOList = boardService.findAll();
-        System.out.println("boardDTOList = " + boardDTOList);
         model.addAttribute("boardList", boardDTOList);
 
         return "list";
@@ -66,11 +69,24 @@ public class BoardController {
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model,
-                           @PageableDefault(page=1) Pageable pageable){
+                           @PageableDefault(page=1) Pageable pageable,
+                           HttpServletRequest request){
         // @PathVariable 어노테이션: 경로상에 있는 값을 가져올 때에 이용
 
-        // 해당 게시글의 조회수를 하나 올린 후에 게시글 데이터를 가져와서 detail.html에 출력해야함
-        boardService.updateHits(id);
+        // 해당 요청의 세션에 이미 조회한 게시글인지 확인
+        HttpSession session = request.getSession();
+        Set<Long> viewedPosts = (Set<Long>) session.getAttribute("viewedPosts");
+        if (viewedPosts == null) {
+            viewedPosts = new HashSet<>();
+        }
+
+        if (!viewedPosts.contains(id)) {
+            // 해당 게시글의 조회수를 하나 올린 후에 게시글 데이터를 가져와서 detail.html에 출력해야함
+            boardService.updateHits(id);
+            viewedPosts.add(id);
+            session.setAttribute("viewedPosts", viewedPosts);
+        }
+
         BoardDTO boardDTO = boardService.findById(id);
 
         // + 댓글 목록 가져오기
@@ -83,12 +99,12 @@ public class BoardController {
         return "detail";
     }
 
+
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable("id") Long id, @RequestParam("page") String page, Model model){
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("boardUpdate", boardDTO);
         model.addAttribute("page", page);
-        System.out.println("수정페이지갈때 페이지 넘어오는지 : " + page);
         return "update";
     }
 
@@ -98,7 +114,7 @@ public class BoardController {
         BoardDTO board = boardService.update(boardDTO);
 
         List<String> delFiles = boardDTO.getDelFiles();
-        System.out.println("컨트롤러로 넘어온 삭제파일 List : " + delFiles);
+
         if(delFiles != null) {
             for (String storedFileName : delFiles){
                 boardService.deleteFile(storedFileName);
@@ -110,21 +126,14 @@ public class BoardController {
                 } else {
                     System.out.println("파일 삭제 실패: " + storedFileName);
                 }
-
             }
         }
 
-
-        System.out.println("컨트롤러 update 결과 : " + board);
-        //BoardDTO(id=65, boardWriter=찐, boardPass=1234, boardTitle=첨파없이, boardContents=사이즈로 구분, boardHits=2, boardCreatedTime=2024-04-17T12:31:01.424787, boardUpdatedTime=2024-04-17T13:05:13.343654, boardFile=null, originalFileName=null, storedFileName=null, fileAttached=0, delFiles=null, searchType=null, searchValue=null)
-        System.out.println("디테일로넘어가기직전 컨트롤러 " + board.getBoardFile());
-        System.out.println("========" + board.getStoredFileName());
-
         model.addAttribute("board", board);
         model.addAttribute("page", page);
-        return "detail";
-        //return "redirect:/board/" + boardDTO.getId();
-        // 이렇게 상세페이지로 가게하면, 수정만해도 조회수가 오르게 됨
+
+        return "redirect:/board/" + boardDTO.getId();
+
     }
 
 //    @GetMapping("/delete/{id}")
@@ -138,9 +147,6 @@ public class BoardController {
     public String delete (@RequestBody BoardDTO boardDTO){
         //boardService.delete(id);
         System.out.println("경로에 저장된 이미지도 삭제하는 컨트롤러");
-        System.out.println(boardDTO.getId());
-        System.out.println(boardDTO.getStoredFileName());
-
         // DB에서 삭제
         boardService.delete(boardDTO.getId());
 
@@ -157,8 +163,6 @@ public class BoardController {
                 }
             }
         }
-
-
         return "redirect:/board/paging";
     }
 
@@ -168,7 +172,6 @@ public class BoardController {
                          BoardDTO boardDTO){
                          //@RequestParam(value = "searchValue", required = false) String keyword){
         // Pageable 인터페이스는 springframework.data.domain로 임포트/ java.awt.print 아님
-
 
         String keyword = boardDTO.getSearchValue();
         String type = boardDTO.getSearchType();
@@ -182,7 +185,6 @@ public class BoardController {
         } else {
             boardList = boardService.paging(pageable);
         };
-
 
     //    pageable.getPageNumber();
     //    Page<BoardDTO> boardList = boardService.paging(pageable);
@@ -202,15 +204,11 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        System.out.println("컨트롤러에서 " + boardList.getContent());
-
         model.addAttribute("keyword" , keyword);
         model.addAttribute("type" , type);
-        System.out.println("keyword 살아있나 " + keyword +", " + type);
 
         return "paging";
     }
-
 
 
 

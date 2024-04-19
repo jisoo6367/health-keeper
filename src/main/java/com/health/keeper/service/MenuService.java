@@ -164,11 +164,11 @@ public class MenuService {
 
                 MenuFileEntity menuFileEntity = MenuFileEntity.toMenuFileEntity(menu, originalFilename, storedFileName);
                 menuFileRepository.save(menuFileEntity);
+            } else {
+                MenuEntity menuEntity = MenuEntity.toUpdateFileEntity(menuDTO);
+                menuRepository.save(menuEntity);
             }
         }
-        MenuEntity menuEntity = MenuEntity.toUpdateEntity(menuDTO);
-        menuRepository.save(menuEntity);
-
 
         return findById(menuDTO.getId());
     }

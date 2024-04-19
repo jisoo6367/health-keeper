@@ -69,7 +69,6 @@ public class MenuEntity {
         return menuEntity;
     }
 
-    // DTO -> Entity (첨부파일 없는 경우)
     public static MenuEntity toUpdateEntity(MenuDTO menuDTO){
         MenuEntity menuEntity = new MenuEntity();
 
@@ -78,12 +77,27 @@ public class MenuEntity {
         menuEntity.setMenuComment(menuDTO.getMenuComment());
         menuEntity.setMenuWriter(menuDTO.getMenuWriter());
         menuEntity.setCreatedTime(menuDTO.getMenuCreatedTime());
+        menuEntity.setFileAttached(0);
 
-        if(menuDTO.getStoredFileName().isEmpty()){
-            menuEntity.setFileAttached(0);
-        }else{ menuEntity.setFileAttached(1);}
+//        if(menuDTO.getStoredFileName().isEmpty()){
+//            menuEntity.setFileAttached(0);
+//        }else{ menuEntity.setFileAttached(1);}
+        //이렇게 구분하면 메서드 하나로 나눌 수 있어서 깔끔한데,
+        //수정페이지에서 기존에 있던 첨부파일을 지우고 다른 파일을 추가하면 .getStoredFileName()이 is null이 나와서 오류가남
+        //-> 메서드를 두개로 나누고 서비스에서 구분
 
         return menuEntity;
     }
+    public static MenuEntity toUpdateFileEntity(MenuDTO menuDTO) {
+        MenuEntity menuEntity = new MenuEntity();
 
+        menuEntity.setId(menuDTO.getId()); //Id값 있으니까 insert문 아니고 update문임!
+        menuEntity.setMenuCategory(menuDTO.getMenuCategory());
+        menuEntity.setMenuComment(menuDTO.getMenuComment());
+        menuEntity.setMenuWriter(menuDTO.getMenuWriter());
+        menuEntity.setCreatedTime(menuDTO.getMenuCreatedTime());
+        menuEntity.setFileAttached(1);
+
+        return menuEntity;
+    }
 }

@@ -39,10 +39,6 @@ public class BoardService {
     public void save(BoardDTO boardDTO) throws IOException {
 
         for (MultipartFile file : boardDTO.getBoardFile()) {
-            System.out.println("==========파일객체 = " + file);
-            System.out.println("========== .getName= " + file.getName()); // boardFile
-            System.out.println("========== .getOriginalFilename= " + file.getOriginalFilename()); // 안나옴
-            System.out.println("========== .getSize= " + file.getSize()); // 0
 
             if (file.getSize() == 0) {
                 System.out.println("첨부파일 없을 때");
@@ -84,9 +80,9 @@ public class BoardService {
                 //DB에 저장하기 전이라서 boardEntity에는 Id 값이 없음
                 Long saveId = boardRepository.save(boardEntity).getId(); //게시글의 번호
                 BoardEntity board = boardRepository.findById(saveId).get();
-                System.out.println("=====그냥 findById(게시글번호) : " + boardRepository.findById(saveId));
+                //System.out.println("=====그냥 findById(게시글번호) : " + boardRepository.findById(saveId));
                 //Optional[com.health.keeper.entity.BoardEntity@782dd072]
-                System.out.println("=====거기에 .get() : " + board);
+                //System.out.println("=====거기에 .get() : " + board);
                 //com.health.keeper.entity.BoardEntity@3eb2fc9e
 
                 for (MultipartFile boardFile : boardDTO.getBoardFile()) { // 1
@@ -145,9 +141,11 @@ public class BoardService {
     @Transactional
     public BoardDTO update(BoardDTO boardDTO) throws IOException {
 
+        BoardEntity boardEntity = null;
+
         for (MultipartFile file : boardDTO.getBoardFile()) {
             if (file != null && !file.isEmpty()) {
-                System.out.println("수정 서비스 추가하는 첨파 있을 때");
+                //System.out.println("수정 서비스 추가하는 첨파 있을 때");
 
                 BoardEntity board = boardRepository.findById(boardDTO.getId()).get();
                 String originalFilename = file.getOriginalFilename();
@@ -157,16 +155,19 @@ public class BoardService {
 
                 BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
                 boardFileRepository.save(boardFileEntity);
+
+                boardEntity = BoardEntity.touUpdateFileEntity(boardDTO);
+                boardRepository.save(boardEntity);
+
+            }else{
+                //System.out.println("수정 서비스 추가하는 첨파 없을 때");
+
+                boardEntity = BoardEntity.touUpdateEntity(boardDTO);
+                boardRepository.save(boardEntity);
+                //save메서드가 insert와 update를 다 해줌. id값이 있냐없냐의 차이
             }
         }
 
-        BoardEntity boardEntity = BoardEntity.touUpdateEntity(boardDTO);
-        boardRepository.save(boardEntity);
-        //save메서드가 insert와 update를 다 해줌. id값이 있냐없냐의 차이
-
-
-        System.out.println("=====보드서비스 업데이트에서 결과물 보드엔티티 : " +boardEntity.getFileAttached());
-        System.out.println("=====그리고 boardDTO : " + boardDTO);
         return findById(boardDTO.getId());
     }
 
@@ -177,7 +178,6 @@ public class BoardService {
     @Transactional
     public void deleteFile(String storedFileName) {
         boardFileRepository.deleteByStoredFileName(storedFileName);
-        System.out.println("파일 삭제 서비스 도착");
     }
 
     public Page<BoardDTO> paging(Pageable pageable) {
@@ -227,7 +227,7 @@ public class BoardService {
             // 예외 처리 또는 기본값 설정
             return Page.empty(); // 혹은 다른 적절한 처리
         }
-        System.out.println("서비스에서 처리결과 " + boardEntities);
+        //System.out.println("서비스에서 처리결과 " + boardEntities);
 
         // 페이지 번호를 1로 시작하도록 조정
         int pageNumber = pageable.getPageNumber() + 1;
@@ -238,23 +238,21 @@ public class BoardService {
                 boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
         // Page 인터페이스에서 제공해주는 map 메서드를 이용하여 Entity를 DTO 객체로 바꿔줌
 
-        System.out.println("서비스 결과 boardDTOS : " + boardDTOS);
+        //System.out.println("서비스 결과 boardDTOS : " + boardDTOS);
         return boardDTOS;
     }
 
 
-
+    //첨부파일 조회
     public List<BoardDTO> getAttachFileList(BoardEntity boardEntity){
 
         List<BoardFileEntity> boardFileEntityList = boardFileRepository.findAllByBoardEntity(boardEntity);
-        System.out.println("첨부파일조회하는 서비스에서 첨파 엔티티리스트: "+ boardFileEntityList);
 
         //Entity -> DTOList
         List<BoardDTO> boardDTOList = new ArrayList<>();
         for(BoardFileEntity boardFileEntity: boardFileEntityList){
             boardDTOList.add(BoardDTO.toBoardDTO(boardFileEntity));
         }
-        System.out.println("서비스에서 첨부파일 DTO 리스트 : " + boardDTOList);
         return boardDTOList;
     }
 
