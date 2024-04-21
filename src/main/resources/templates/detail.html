@@ -100,10 +100,10 @@
         const id = [[${board.id}]];
         const storedFileName = [[${board.storedFileName}]];
         const pass = [[${board.boardPass}]];
-        const password = prompt("글을 삭제하려면 비밀번호를 입력하세요:");
+        const inputPass = prompt("글을 삭제하려면 비밀번호를 입력하세요:");
 
         //if(confirm("정말 삭제 하시겠습니까?")){
-        if(password === pass){
+        if(inputPass === pass){
             $.ajax({
                 type: "post",
                 url: "/board/delete",
