@@ -78,6 +78,9 @@
 
 </body>
 <script th:inline="javascript"> // [[${board.id}]] 같은 타임리프 문법 쓰려면 필요
+
+
+
     const listReq = () => {
         console.log("목록 요청");
         const page = [[${page}]];
@@ -96,8 +99,11 @@
         console.log("삭제 요청");
         const id = [[${board.id}]];
         const storedFileName = [[${board.storedFileName}]];
+        const pass = [[${board.boardPass}]];
+        const password = prompt("글을 삭제하려면 비밀번호를 입력하세요:");
 
-        if(confirm("정말 삭제 하시겠습니까?")){
+        //if(confirm("정말 삭제 하시겠습니까?")){
+        if(password === pass){
             $.ajax({
                 type: "post",
                 url: "/board/delete",
