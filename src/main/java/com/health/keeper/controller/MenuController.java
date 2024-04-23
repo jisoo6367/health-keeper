@@ -17,10 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RequestMapping("/menu")
@@ -33,7 +31,6 @@ public class MenuController {
 //    public MenuController(MenuService menuService) {
 //        this.menuService = menuService;
 //    }
-
 
 
     @GetMapping("/list")
@@ -60,7 +57,7 @@ public class MenuController {
                                     return Integer.MAX_VALUE;
                             }
                         })))
-                );
+        );
 
         System.out.println("정렬 후 menuDTOList = " + menuDTOList);
 
