@@ -24,4 +24,40 @@
 </form>
 <hr>
 </body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+
+       console.log("레디함수작동");
+
+       $("#username").on("focusout", function() {
+
+           var id = $("#username").val();
+
+           if(id == '' || id.length == 0) {
+               $("#label1").css("color", "red").text("공백은 ID로 사용할 수 없습니다.");
+               return false;
+           }
+
+           //Ajax로 전송
+           $.ajax({
+               url : '/confirm',
+               data : {
+                   id : id
+               },
+               type : 'POST',
+               dataType : 'json',
+               success : function(result) {
+                   if (result == true) {
+                       $("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
+                   } else{
+                       $("#label1").css("color", "red").text("사용 불가능한 ID 입니다.");
+                       $("#id").val('');
+                   }
+               }
+           }); //End Ajax
+       });
+   })
+
+</script>
 </html>

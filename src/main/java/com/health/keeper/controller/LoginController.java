@@ -115,4 +115,10 @@ public class LoginController {
         return "/user";
     }
 
+    @PostMapping("/confirm")
+    public String confirmUsername(){
+        System.out.println("컨트롤러오긴함");
+        return null;
+    }
+
 }
