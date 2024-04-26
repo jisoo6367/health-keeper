@@ -9,7 +9,7 @@
 <hr>
 <form action="/join" method="post">
     <div>
-        <input type="text" name="username" placeholder="UserName"><br>
+        <input type="text" name="username" id="username" placeholder="UserName"><br>
         <label id="label1"></label>
     </div>
 
@@ -28,13 +28,11 @@
 <script>
     $(document).ready(function() {
 
-       console.log("레디함수작동");
+       $("#username").on("change", function() {
+           var username = $("#username").val();
+           console.log(username);
 
-       $("#username").on("focusout", function() {
-
-           var id = $("#username").val();
-
-           if(id == '' || id.length == 0) {
+           if(username == '' || username.length == 0) {
                $("#label1").css("color", "red").text("공백은 ID로 사용할 수 없습니다.");
                return false;
            }
@@ -43,7 +41,7 @@
            $.ajax({
                url : '/confirm',
                data : {
-                   id : id
+                   username : username
                },
                type : 'POST',
                dataType : 'json',
@@ -52,7 +50,7 @@
                        $("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
                    } else{
                        $("#label1").css("color", "red").text("사용 불가능한 ID 입니다.");
-                       $("#id").val('');
+                       $("#username").val('');
                    }
                }
            }); //End Ajax

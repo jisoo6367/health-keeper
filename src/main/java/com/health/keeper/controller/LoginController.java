@@ -3,8 +3,11 @@ package com.health.keeper.controller;
 import com.health.keeper.entity.UserEntity;
 import com.health.keeper.repository.UserRepository;
 import com.health.keeper.security.auth.PrincipalDetails;
+import com.health.keeper.service.UserService;
 import jdk.jfr.Unsigned;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +30,7 @@ public class LoginController {
 
     @Autowired
     UserRepository userRepository;
+
 
     @GetMapping("/loginForm")
     public String loginF(){
@@ -116,9 +120,25 @@ public class LoginController {
     }
 
     @PostMapping("/confirm")
-    public String confirmUsername(){
+    @ResponseBody
+    public ResponseEntity<Boolean> confirmUsername(String username){
         System.out.println("컨트롤러오긴함");
-        return null;
+
+        boolean result = true;
+
+        if(username.trim().isEmpty()) {
+            System.out.println("===가져온 username : " + username);
+            result = false;
+        } else {
+            System.out.println("===엘스문에서 username : " + username);
+            if (userRepository.countByUsername(username)) {
+                result = false;
+            } else {
+                result = true;
+            }
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

@@ -9,4 +9,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> { //<엔
 
     public UserEntity findByPhone(String phone);
 
+    public Boolean countByUsername(String username);
 }
