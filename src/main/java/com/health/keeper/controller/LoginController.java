@@ -119,9 +119,8 @@ public class LoginController {
         return "/user";
     }
 
-    @PostMapping("/confirm")
-    @ResponseBody
-    public ResponseEntity<Boolean> confirmUsername(String username){
+    @PostMapping(value = "/confirm" , produces = {"application/json; charset=utf-8"})
+    public @ResponseBody ResponseEntity<Boolean> confirmUsername(@PathVariable("username") String username){
         System.out.println("컨트롤러오긴함");
 
         boolean result = true;
