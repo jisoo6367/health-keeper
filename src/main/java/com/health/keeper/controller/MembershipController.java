@@ -27,7 +27,7 @@ public class MembershipController {
         List<MembershipDTO> membershipDTOList = membershipService.findByUserId(principal);
         System.out.println("컨트롤러 결과 : "+ membershipDTOList);
 
-        model.addAttribute("membership", membershipDTOList);
+
 
         return "/membership";
     }

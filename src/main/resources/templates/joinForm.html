@@ -39,11 +39,10 @@
 
         	$.ajax({
         		url : '/confirm',
-        		data : {
-        			username : username
-        		},
+        		data : JSON.stringify({ username: username }),
         		type : 'POST',
         		dataType : 'json',
+        		contentType: 'application/json',
         		success : function(result) {
         			if (result == true) {
         				$("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
