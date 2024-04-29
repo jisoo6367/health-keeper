@@ -28,6 +28,12 @@ public class MembershipController {
         System.out.println("컨트롤러 결과 : "+ membershipDTOList);
 
 
+        if (membershipDTOList.isEmpty()){
+            model.addAttribute("membership", null);
+        } else {
+            model.addAttribute("membership", membershipDTOList);
+        }
+
 
         return "/membership";
     }

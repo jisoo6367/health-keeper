@@ -7,25 +7,26 @@
 </head>
 <body>
 <h3>회원권</h3>
+<div th:if="${not #lists.isEmpty(membership)}">
+    <table>
+        <tr>
+            <th>티켓 이름</th>
+            <th>상태</th>
+            <th>횟수</th>
+            <th>기간</th>
+        </tr>
+        <tr th:each="membership: ${membership}">
+            <td th:text="${membership.name}"></td>
+            <td th:text="${membership.status}"></td>
+            <td th:text="${membership.amount}"></td>
+            <td th:text="${membership.period}"></td>
+        </tr>
+    </table>
+</div>
 <div th:if="${#lists.isEmpty(membership)}">
     <p>회원권이 없습니다.</p>
 </div>
-<table th:if="${membership != null and !membership.empty}">
-    <tr>
-        <th>티켓 이름</th>
-        <th>상태</th>
-        <th>횟수</th>
-        <th>기간</th>
-    </tr>
-    <tr th:each="membership: ${membership}">
-        <td th:text="${membership.name}"></td>
-        <td th:text="${membership.status}"></td>
-        <td th:text="${membership.amount}"></td>
-        <td th:text="${membership.period}"></td>
 
-    </tr>
-
-</table>
 
 
 
