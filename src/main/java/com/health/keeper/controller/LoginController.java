@@ -119,11 +119,11 @@ public class LoginController {
         return "/user";
     }
 
-    @PostMapping(value = "/confirm" , produces = {"application/json; charset=utf-8"})
+    @PostMapping(value = "/confirm/{username}" , produces = {"application/json; charset=utf-8"})
     public @ResponseBody ResponseEntity<Boolean> confirmUsername(@PathVariable("username") String username){
         System.out.println("컨트롤러오긴함");
 
-        boolean result = true;
+        boolean result ;
 
         if(username.trim().isEmpty()) {
             System.out.println("===가져온 username : " + username);

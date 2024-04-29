@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <h1>회원가입 페이지</h1>
@@ -24,11 +26,10 @@
 </form>
 <hr>
 </body>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
 
-       $("#username").on("change", function() {
+        $("#username").on("change", function() {
            var username = $("#username").val();
            console.log(username);
 
@@ -37,28 +38,28 @@
                return false;
            }
 
-        	$.ajax({
-        		url : '/confirm',
-        		data : JSON.stringify({ username: username }),
-        		type : 'POST',
-        		dataType : 'json',
-        		contentType: 'application/json',
-        		success : function(result) {
-        			if (result == true) {
-        				$("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
-        			} else{
-        				$("#label1").css("color", "red").text("사용 불가능한 ID 입니다.");
-        				$("#id").val('');
-        			}
-        		},
-                error: function(xhr, status, error) {
-                    console.error("요청 실패:", error);
-                    console.error("status:", status);
-                    console.error("xhr:", xhr);
-                }
-        	}); //End Ajax
+            $.ajax({
+                type: "post",
+                url: "/confirm/" + username,
+                contentType: "application/json",
+                data: JSON.stringify({ username: username }),
 
-       }); //change-end
-});//ready-end
+                success: function(result) {
+                   console.log("ajax 요청 성공");
+                   console.log(result);
+                   if(result == true) {
+                    $("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
+                   } else {
+                    $("#label1").css("color", "red").text("사용 불가한 ID 입니다.");
+                    $("#id").val("");
+                   }
+                },
+                error: function(xhr, status, error) {
+                   console.error("요청 실패:", error);
+                   console.error("xhr: ", xhr);
+                }
+            });
+        }); //change-end
+    });//ready-end
 </script>
 </html>
