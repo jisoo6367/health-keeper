@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
@@ -26,7 +26,7 @@
 </form>
 <hr>
 </body>
-<script type="text/javascript">
+<script th:inline="javascript">
     $(document).ready(function() {
 
         $("#username").on("change", function() {
@@ -40,14 +40,15 @@
 
             $.ajax({
                 type: "post",
-                url: "/confirm/" + username,
-                contentType: "application/json",
-                data: JSON.stringify({ username: username }),
+                url: "/confirm" ,
+                contentType: "application/json; charset=utf-8",
+                data: { "username": username },
+
 
                 success: function(result) {
                    console.log("ajax 요청 성공");
                    console.log(result);
-                   if(result == true) {
+                   if(result === true) {
                     $("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
                    } else {
                     $("#label1").css("color", "red").text("사용 불가한 ID 입니다.");

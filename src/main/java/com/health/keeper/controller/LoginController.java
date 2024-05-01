@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class LoginController {
@@ -34,6 +35,7 @@ public class LoginController {
 
     @GetMapping("/loginForm")
     public String loginF(){
+        System.out.println("여길 들리는건가?");
         return "/loginForm";
     }
 
@@ -51,6 +53,7 @@ public class LoginController {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
+
         return "redirect:loginForm";
     }
 
@@ -119,25 +122,25 @@ public class LoginController {
         return "/user";
     }
 
-    @PostMapping(value = "/confirm/{username}" , produces = {"application/json; charset=utf-8"})
-    public @ResponseBody ResponseEntity<Boolean> confirmUsername(@PathVariable("username") String username){
-        System.out.println("컨트롤러오긴함");
+    @PostMapping(value = "/confirm",
+            produces = "text/plain; charset=utf-8")
+    public ResponseEntity<String> confirmUsername(@RequestParam("username") String username) {
+        String result = "";
 
-        boolean result ;
-
-        if(username.trim().isEmpty()) {
-            System.out.println("===가져온 username : " + username);
-            result = false;
+        if(username == null || username.trim().isEmpty()) {
+            result = "false";
         } else {
-            System.out.println("===엘스문에서 username : " + username);
-            if (userRepository.countByUsername(username)) {
-                result = false;
+            if (userRepository.countByUsername(username) == 1) {
+                result = "false";
             } else {
-                result = true;
+                result = "true";
             }
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
+
 
 }
