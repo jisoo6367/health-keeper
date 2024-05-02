@@ -35,7 +35,6 @@ public class LoginController {
 
     @GetMapping("/loginForm")
     public String loginF(){
-        System.out.println("여길 들리는건가?");
         return "/loginForm";
     }
 
@@ -122,7 +121,7 @@ public class LoginController {
         return "/user";
     }
 
-    @PostMapping(value = "/confirm",
+    @GetMapping(value = "/confirm",
             produces = "text/plain; charset=utf-8")
     public ResponseEntity<String> confirmUsername(@RequestParam("username") String username) {
         String result = "";

@@ -30,12 +30,13 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers( "/login", "/loginForm", "/join", "/joinForm").permitAll()
+                        .requestMatchers( "/login", "/loginForm", "/join", "/joinForm","/confirm").permitAll()
                         .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/manager").hasAnyRole("ADMIN", "MANAGER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
+
 
         //http.httpBasic(Customizer.withDefaults());
 
@@ -56,6 +57,8 @@ public class SecurityConfig {
                         .loginPage("/loginForm")
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(principalOauth2UserService)));
+
+
 
         return http.build();
     }
