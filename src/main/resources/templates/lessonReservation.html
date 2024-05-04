@@ -6,91 +6,32 @@
     <title>수업 예약</title>
 </head>
 <body>
-<h2>운동 예약 페이지</h2>
+<header>
+    <h1>운동 예약 시스템</h1>
+</header>
 
-<div id="container" style="padding:0;">
-    <div class="container" style="padding:15px;min-height:457px;">
-        <div id="bo_list">
-            <div class="tbl_head02 tbl_wrap">
-                <div class="cal_navi">
-                    <h3>2024 년 04 월</h3>
-                </div>
+<main>
+    <section id="calendar">
+        <!-- 달력이 여기에 표시될 것입니다. -->
+        <input type="date" id="selectedDate">
+        <button onclick="getDate()">선택</button>
+    </section>
 
-                <table class="wrap_calendar" >
-                    <colgroup>
-                        <col width="15%" span="7">
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th scope="col" style="color: #e05349;">일</th>
-                        <th scope="col">월</th>
-                        <th scope="col">화</th>
-                        <th scope="col">수</th>
-                        <th scope="col">목</th>
-                        <th scope="col">금</th>
-                        <th scope="col" style="color: #49a1e0;">토</th>
-                    </tr>
-                    </thead>
-                    <tbody id="calendarBody">
-                    <!-- 달력 내용이 여기에 동적으로 생성됩니다 -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+    <section id="schedule">
+        <!-- 해당 날짜의 운동 프로그램이 여기에 표시될 것입니다. -->
+    </section>
+</main>
 
-<button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
+<footer>
+    <p>&copy; 2024 운동 예약 시스템</p>
+</footer>
 
-<script th:inline="javascript">
-
-    // 홈으로 이동하는 함수
-    const goHome = () => {
-        location.href = "/";
+<script>
+    function getDate() {
+        const selectedDate = document.getElementById("selectedDate").value;
+        console.log(selectedDate); // 선택된 날짜 출력 (YYYY-MM-DD 형식)
+        // 여기서 선택된 날짜를 이용하여 해당 날짜의 운동 프로그램을 가져오는 등의 작업을 수행할 수 있습니다.
     }
-
-    // 달력 셀을 동적으로 생성합니다
-    const calendarBody = document.getElementById('calendarBody');
-    const startDate = new Date(2024, 3, 1); // 2024-04-01
-    const endDate = new Date(2024, 3, 30); // 2024-04-30
-
-    let tr; // 행 요소를 저장할 변수
-    for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-        if (!tr) {
-            // 새로운 행 생성
-            tr = document.createElement('tr');
-            calendarBody.appendChild(tr);
-        }
-
-        const formattedDate = date.toISOString().slice(0, 10); // 날짜 형식을 "YYYY-MM-DD"로 포맷합니다
-        const day = date.getDate();
-        const isSaturday = date.getDay() === 6;
-        const isSunday = date.getDay() === 0;
-
-        const td = document.createElement('td');
-        td.setAttribute('style', 'vertical-align: top;');
-        td.setAttribute('data-date', formattedDate);
-
-        const span = document.createElement('span');
-        span.setAttribute('class', 'date_head');
-        span.textContent = day;
-
-        if (isSaturday) {
-            span.setAttribute('style', 'color: #49a1e0');
-        } else if (isSunday) {
-            span.setAttribute('style', 'color: #e05349');
-        }
-
-        td.appendChild(span);
-        tr.appendChild(td);
-
-        // 토요일이면 다음 행으로 넘어갑니다
-        if (isSaturday) {
-            tr = null;
-        }
-    }
-
 </script>
 </body>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </html>
