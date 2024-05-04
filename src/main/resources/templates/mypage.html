@@ -28,17 +28,24 @@
 </form>
 <button type="button" class="btn btn-outline-primary" onclick="modify()">수정</button>
 <button type="button" class="btn btn-outline-primary" onclick="goHome()">홈으로</button>
+<button type="button" class="btn btn-outline-danger" onclick="logout()">로그아웃</button>
 
 </body>
 
 <script th:inline="javascript">
   // 홈으로
-      const goHome = () => {
-      location.href = "/";
+    const goHome = () => {
+    location.href = "/";
   }
 
+  // 로그아웃
+    const logout = () => {
+      if(confirm("정말 로그아웃 하시겠습니까?")){
+          location.href = "/logout";
+      }
+    }
 
-  //수정
+  // 수정
   const modify = () => {
     var username = $("#username").val();
     var password = $("#password").val();
