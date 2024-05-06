@@ -15,6 +15,20 @@ spring:
   main:
     allow-circular-references: true
 
+    mail:
+      host: smtp.gmail.com
+      port: 465
+      username: "[본인이 사용할 이메일]"
+      password: "[생성된 비밀번호]"
+      properties:
+        mail:
+          smtp:
+            auth: true
+            timeout: 5000
+            starttls:
+              enable: true
+
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_test?serverTimezone=Asia/Seoul
