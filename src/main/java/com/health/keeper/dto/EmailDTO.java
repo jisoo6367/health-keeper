@@ -7,7 +7,7 @@ import lombok.Data;
 public class EmailDTO {
 
     private String emailType;
-    private String emailCode;
+    private String emailCode; //네이버는 256, 구글은 51..
     private String emailNum;
 
 
