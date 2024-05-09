@@ -1,8 +1,10 @@
 package com.health.keeper.controller;
 
+import com.health.keeper.dto.EmailDTO;
 import com.health.keeper.entity.UserEntity;
 import com.health.keeper.repository.UserRepository;
 import com.health.keeper.security.auth.PrincipalDetails;
+import com.health.keeper.service.MailService;
 import com.health.keeper.service.UserService;
 import jdk.jfr.Unsigned;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +141,13 @@ public class LoginController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    //이메일 인증
+    private MailService mailService;
 
+    @PostMapping("/mail")
+    public void MailSend(EmailDTO emailDTO){
+        mailService.CreateMail(String.valueOf(emailDTO));
+    }
 
 
 }
