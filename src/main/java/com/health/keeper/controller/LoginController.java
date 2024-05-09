@@ -27,8 +27,9 @@ public class LoginController {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public LoginController (BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public LoginController (BCryptPasswordEncoder bCryptPasswordEncoder, MailService mailService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.mailService = mailService;
     }
 
     @Autowired
@@ -142,12 +143,22 @@ public class LoginController {
     }
 
     //이메일 인증
-    private MailService mailService;
+    private final MailService mailService;
 
+//    @PostMapping("/mail")
+//    public void MailSend(EmailDTO emailDTO){
+//        mailService.CreateMail(String.valueOf(emailDTO));
+//    }
+
+    @ResponseBody
     @PostMapping("/mail")
-    public void MailSend(EmailDTO emailDTO){
-        mailService.CreateMail(String.valueOf(emailDTO));
-    }
+    public String MailSend(EmailDTO emailDTO){
 
+        int number = mailService.sendMail(emailDTO.getEmailNum());
+
+        String num = "" + number;
+
+        return num;
+    }
 
 }
