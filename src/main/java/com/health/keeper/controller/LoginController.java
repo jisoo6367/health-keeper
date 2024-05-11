@@ -26,7 +26,9 @@ import java.util.Map;
 public class LoginController {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MailService mailService;
 
+    @Autowired
     public LoginController (BCryptPasswordEncoder bCryptPasswordEncoder, MailService mailService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.mailService = mailService;
@@ -143,7 +145,6 @@ public class LoginController {
     }
 
     //이메일 인증
-    private final MailService mailService;
 
 //    @PostMapping("/mail")
 //    public void MailSend(EmailDTO emailDTO){
