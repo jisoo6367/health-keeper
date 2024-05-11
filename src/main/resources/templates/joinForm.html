@@ -18,7 +18,19 @@
     <input type="password" name="password" placeholder="Password"><br>
     <input type="number" name="phone" placeholder="PhoneNumber"><br>
     <input type="email" name="email" placeholder="Email">
-    <input type="button" value="인증하기" onclick="location.href='/mail'"><br>
+
+
+    <div class="form-group">
+        <button type="button" id="sendBtn" name="sendBtn" onclick="sendNumber()">인증번호</button>
+    </div>
+    <br>
+    <div id="mail_number" name="mail_number" style="display: none">
+        <input type="text" name="number" id="number" style="width:250px; margin-top: -10px" placeholder="인증번호 입력">
+        <button type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">이메일 인증</button>
+    </div>
+
+
+
 
     <select name="role">
         <option value="ROLE_USER">회원님</option>
@@ -64,5 +76,20 @@
             });
         }); //change-end
     });//ready-end
+
+
+    function sendNumber(){
+        $("#mail_number").css("display","block");
+        $.ajax({
+            url:"/mail",
+            type:"post",
+            dataType:"json",
+            data:{"mail" : $("#mail").val()},
+            success: function(data){
+                alert("인증번호 발송");
+                $("#Confirm").attr("value",data);
+	        }
+        });
+    }
 </script>
 </html>
