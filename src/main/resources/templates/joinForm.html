@@ -79,17 +79,26 @@
 
 
     function sendNumber(){
+        const email = $("#email").val();
+        console.log(email);
         $("#mail_number").css("display","block");
         $.ajax({
             url:"/mail",
             type:"post",
             dataType:"json",
-            data:{"mail" : $("#mail").val()},
+            data:{"mail" : $("#email").val()},
             success: function(data){
                 alert("인증번호 발송");
                 $("#Confirm").attr("value",data);
 	        }
         });
     }
+
+
+
+
+
+
+
 </script>
 </html>
