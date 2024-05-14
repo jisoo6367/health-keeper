@@ -17,14 +17,14 @@
 
     <input type="password" name="password" placeholder="Password"><br>
     <input type="number" name="phone" placeholder="PhoneNumber"><br>
-    <input type="email" name="email" placeholder="Email">
+    <input type="email" name="email" id="email" placeholder="Email">
 
 
     <div class="form-group">
         <button type="button" id="sendBtn" name="sendBtn" onclick="sendNumber()">인증번호</button>
     </div>
     <br>
-    <div id="mail_number" name="mail_number" style="display: none">
+    <div id="mail_number" style="display: none">
         <input type="text" name="number" id="number" style="width:250px; margin-top: -10px" placeholder="인증번호 입력">
         <button type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">이메일 인증</button>
     </div>
@@ -58,7 +58,6 @@
                 contentType: "application/json; charset=utf-8",
                 data: { "username": username },
 
-
                 success: function(result) {
                    console.log("ajax 요청 성공");
                    console.log(result);
@@ -86,7 +85,7 @@
             url:"/mail",
             type:"post",
             dataType:"json",
-            data:{"mail" : $("#email").val()},
+            data:{"email" : email},
             success: function(data){
                 alert("인증번호 발송");
                 $("#Confirm").attr("value",data);

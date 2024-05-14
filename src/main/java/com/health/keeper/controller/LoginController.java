@@ -153,13 +153,14 @@ public class LoginController {
 
     @ResponseBody
     @PostMapping("/mail")
-    public String MailSend(EmailDTO emailDTO){
+        public String MailSend(@RequestParam("email") String email){
+            System.out.println("컨트롤러에 왔는감? : " + email);
 
-        int number = mailService.sendMail(emailDTO.getEmailNum());
+            int number = mailService.sendMail(email);
 
-        String num = "" + number;
+            String num = "" + number;
 
-        return num;
+            return num;
     }
 
 
