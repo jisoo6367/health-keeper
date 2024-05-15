@@ -79,7 +79,14 @@
 
     function sendNumber(){
         const email = $("#email").val();
-        console.log(email);
+
+        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+            alert("이메일 형식에 맞게 입력해주세요.");
+            return;
+        }
+
+
         $("#mail_number").css("display","block");
         $.ajax({
             url:"/mail",
@@ -91,6 +98,12 @@
                 $("#Confirm").attr("value",data);
 	        }
         });
+
+
+
+
+
+
     }
 
 
