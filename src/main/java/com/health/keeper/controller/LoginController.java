@@ -6,6 +6,7 @@ import com.health.keeper.repository.UserRepository;
 import com.health.keeper.security.auth.PrincipalDetails;
 import com.health.keeper.service.MailService;
 import com.health.keeper.service.UserService;
+import jakarta.mail.MessagingException;
 import jdk.jfr.Unsigned;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -162,7 +163,20 @@ public class LoginController {
 
             return num;
     }
+    // 인증코드 메일 발송
+    @PostMapping("/sendMail")
+    public String mailSend(EmailDTO emailDto) throws MessagingException {
 
+        return "인증코드가 발송되었습니다.";
+    }
+
+    // 인증코드 인증
+    @PostMapping("/verify")
+    public String verify(EmailDTO emailDto) {
+        //boolean isVerify = emailService.verifyEmailCode(emailDto.getMail(), emailDto.getVerifyCode());
+        boolean isVerify = true;
+        return isVerify ? "인증이 완료되었습니다." : "인증 실패하셨습니다.";
+    }
 
 
 
