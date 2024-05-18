@@ -25,6 +25,7 @@
     </div>
     <br>
     <div id="mail_number" style="display: none">
+        <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
         <input type="text" name="number" id="number" style="width:250px; margin-top: -10px" placeholder="인증번호 입력">
         <button type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">이메일 인증</button>
     </div>
@@ -43,6 +44,7 @@
 <script th:inline="javascript">
     $(document).ready(function() {
 
+        // 아이디 중복확인
         $("#username").on("change", function() {
            var username = $("#username").val();
            console.log(username);
@@ -77,6 +79,7 @@
     });//ready-end
 
 
+    // 이메일 인증
     function sendNumber(){
         const email = $("#email").val();
 
@@ -85,7 +88,6 @@
             alert("이메일 형식에 맞게 입력해주세요.");
             return;
         }
-
 
         $("#mail_number").css("display","block");
         $.ajax({
@@ -99,7 +101,16 @@
 	        }
         });
 
+    function confirmNumber(){
+        var number1 = $("#number").val();
+        var number2 = $("#Confirm").val();
 
+        if(number1 == number2){
+            alert("인증되었습니다.");
+        }else{
+            alert("번호가 다릅니다.");
+        }
+    }
 
 
 

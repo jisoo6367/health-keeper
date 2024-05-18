@@ -155,7 +155,6 @@ public class LoginController {
     @ResponseBody
     @PostMapping("/mail")
         public String MailSend(@RequestParam("email") String email){
-            System.out.println("컨트롤러에 왔는감? : " + email);
 
             int number = mailService.sendMail(email);
 
