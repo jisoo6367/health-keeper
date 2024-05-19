@@ -147,11 +147,6 @@ public class LoginController {
 
     //이메일 인증
 
-//    @PostMapping("/mail")
-//    public void MailSend(EmailDTO emailDTO){
-//        mailService.CreateMail(String.valueOf(emailDTO));
-//    }
-
     @ResponseBody
     @PostMapping("/mail")
         public String MailSend(@RequestParam("email") String email){
@@ -162,6 +157,9 @@ public class LoginController {
 
             return num;
     }
+
+
+
     // 인증코드 메일 발송
     @PostMapping("/sendMail")
     public String mailSend(EmailDTO emailDto) throws MessagingException {
