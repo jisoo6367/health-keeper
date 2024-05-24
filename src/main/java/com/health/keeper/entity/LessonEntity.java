@@ -32,8 +32,8 @@ public class LessonEntity {
     private String instructorId; //강사 아이디
 
     @Column
-    @Temporal(TemporalType.DATE) // Date 타입으로 매핑
-    private LocalDate reservationDate; //예약날짜
+    //@Temporal(TemporalType.DATE) // Date 타입으로 매핑
+    private String reservationDate; //예약날짜
 
     @Column
     private String startTime;//수업 시작시간
