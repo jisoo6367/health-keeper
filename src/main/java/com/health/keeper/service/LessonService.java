@@ -34,6 +34,11 @@ public class LessonService {
         List<LessonEntity> lessonEntityList = lessonRepository.findByReservationDate(reservationDate);
 
         List<LessonDTO> lessonDTOList = new ArrayList<>();
+
+        for (LessonEntity lessonEntity: lessonEntityList){
+            lessonDTOList.add(LessonDTO.toLessonDTO(lessonEntity));
+        }
+
         return lessonDTOList;
     };
 

@@ -1,5 +1,6 @@
 package com.health.keeper.dto;
 
+import com.health.keeper.entity.LessonEntity;
 import lombok.Data;
 import lombok.ToString;
 
@@ -23,5 +24,20 @@ public class LessonDTO {
     private String status; //예약상태 (몇명 찼는지..? 완료 그런거)
 
 
+    // Entity -> DTO
+    public static LessonDTO toLessonDTO(LessonEntity lessonEntity){
+        LessonDTO lessonDTO = new LessonDTO();
+
+        lessonDTO.setId(lessonEntity.getId());
+        lessonDTO.setClassId(lessonEntity.getClassId());
+        lessonDTO.setClassName(lessonEntity.getClassName());
+        lessonDTO.setInstructorId(lessonEntity.getClassId());
+        lessonDTO.setReservationDate(lessonEntity.getReservationDate());
+        lessonDTO.setStartTime(lessonEntity.getStartTime());
+        lessonDTO.setEndTime(lessonEntity.getEndTime());
+        lessonDTO.setStatus(lessonEntity.getStatus());
+
+        return lessonDTO;
+    }
 
 }
