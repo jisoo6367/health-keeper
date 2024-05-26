@@ -8,7 +8,9 @@ import com.health.keeper.service.MembershipService;
 import com.health.keeper.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -26,15 +28,17 @@ public class LessonController {
         return "lessonReservation";
     }
 
-    @GetMapping("/list")
-    public String findById () {
+    @GetMapping("/list/{selectedDate}")
+    public String findById (@PathVariable("selectedDate")String reservationDate, Model model) {
 
-        String reservationDate = "240522";
+
         List<LessonDTO> lessonDTOList = lessonService.findById(reservationDate);
 
         System.out.println("이거왜안나와 : " +lessonDTOList);
-        return "lessonReservation";
 
+        model.addAttribute("lesson", lessonDTOList);
+
+        return "lessonReservation";
     }
 
 
