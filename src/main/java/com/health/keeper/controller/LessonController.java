@@ -32,11 +32,12 @@ public class LessonController {
     public String findById (@PathVariable("selectedDate")String reservationDate, Model model) {
 
 
-        List<LessonDTO> lessonDTOList = lessonService.findById(reservationDate);
+        //List<LessonDTO> lessonDTOList = lessonService.findById(reservationDate);
+        //model.addAttribute("lesson", lessonDTOList);
 
-        System.out.println("이거왜안나와 : " +lessonDTOList);
-
-        model.addAttribute("lesson", lessonDTOList);
+        List<LessonDTO> lessons = lessonService.findById(reservationDate);
+        List<LessonDTO> sortedLessons = LessonDTO.sortLessonsByTime(lessons);
+        model.addAttribute("lessons", sortedLessons);
 
         return "lessonReservation";
     }

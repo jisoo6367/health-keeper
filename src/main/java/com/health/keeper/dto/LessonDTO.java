@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ToString
 @Data //(@Getter + @Setter + @ToString + @NoArgsConstructor + @AllArgsConstructor)
@@ -17,7 +19,7 @@ public class LessonDTO {
     private Long classId; //수업 고유아이디
     private Long userId; //이건 나중에 조인으로 가져오기
     private String className;
-    private Long instructorId; //강사아이디 (이름으로하는게 낫나?)
+    private String instructorId; //강사아이디 (이름으로하는게 낫나?)
     private String reservationDate; //예약날짜
     private String startTime; //수업 시작시간
     private String endTime; //수업 종료시간
@@ -31,13 +33,20 @@ public class LessonDTO {
         lessonDTO.setId(lessonEntity.getId());
         lessonDTO.setClassId(lessonEntity.getClassId());
         lessonDTO.setClassName(lessonEntity.getClassName());
-        lessonDTO.setInstructorId(lessonEntity.getClassId());
+        lessonDTO.setInstructorId(lessonEntity.getInstructorId());
         lessonDTO.setReservationDate(lessonEntity.getReservationDate());
         lessonDTO.setStartTime(lessonEntity.getStartTime());
         lessonDTO.setEndTime(lessonEntity.getEndTime());
         lessonDTO.setStatus(lessonEntity.getStatus());
 
         return lessonDTO;
+    }
+
+    // 수업 리스트를 시간순서대로 정렬하는 메서드
+    public static List<LessonDTO> sortLessonsByTime(List<LessonDTO> lessons) {
+        return lessons.stream()
+                .sorted(Comparator.comparing(LessonDTO::getStartTime))
+                .collect(Collectors.toList());
     }
 
 }

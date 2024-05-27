@@ -18,7 +18,28 @@
     </section>
 
     <section id="schedule">
-        <!-- 해당 날짜의 운동 프로그램이 여기에 표시될 것입니다. -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>예약 날짜</th>
+                <th>수업 시작 시간</th>
+                <th>수업 종료 시간</th>
+                <th>수업 이름</th>
+                <th>강사 아이디</th>
+                <th>예약 상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="lesson : ${lessons}">
+                <td th:text="${lesson.reservationDate}"></td>
+                <td th:text="${lesson.startTime}"></td>
+                <td th:text="${lesson.endTime}"></td>
+                <td th:text="${lesson.className}"></td>
+                <td th:text="${lesson.instructorId}"></td>
+                <td th:text="${lesson.status}"></td>
+            </tr>
+            </tbody>
+        </table>
     </section>
 </main>
 
