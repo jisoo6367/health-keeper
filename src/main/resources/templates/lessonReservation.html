@@ -27,6 +27,7 @@
                 <th>수업 이름</th>
                 <th>강사 아이디</th>
                 <th>예약 상태</th>
+                <th>예약하기</th>
             </tr>
             </thead>
             <tbody>
@@ -37,6 +38,9 @@
                 <td th:text="${lesson.className}"></td>
                 <td th:text="${lesson.instructorId}"></td>
                 <td th:text="${lesson.status}"></td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary" th:onclick="'reserveLesson(' + ${lesson.id} + ')'">예약</button>
+                </td>
             </tr>
             </tbody>
         </table>
