@@ -41,8 +41,11 @@ public class LessonEntity {
     @Column
     private String endTime; //수업 종료시간
 
-    @Column(length = 500)
-    private String Status; //예약상태
+    @Column
+    private int booked; //현재 예약인원 수
+
+    @Column
+    private int capacity; //총 예약 가능인원
 
     // JPA 에서 제공하는 어노테이션
     @OnDelete(action = OnDeleteAction.CASCADE)

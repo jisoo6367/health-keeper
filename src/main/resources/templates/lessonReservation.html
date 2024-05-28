@@ -22,10 +22,9 @@
             <thead>
             <tr>
                 <th>예약 날짜</th>
-                <th>수업 시작 시간</th>
-                <th>수업 종료 시간</th>
+                <th>수업 시간</th>
                 <th>수업 이름</th>
-                <th>강사 아이디</th>
+                <th>강사</th>
                 <th>예약 상태</th>
                 <th>예약하기</th>
             </tr>
@@ -33,11 +32,10 @@
             <tbody>
             <tr th:each="lesson : ${lessons}">
                 <td th:text="${lesson.reservationDate}"></td>
-                <td th:text="${lesson.startTime}"></td>
-                <td th:text="${lesson.endTime}"></td>
+                <td th:text="${lesson.startTime} + ' ~ ' + ${lesson.endTime}"></td>
                 <td th:text="${lesson.className}"></td>
                 <td th:text="${lesson.instructorId}"></td>
-                <td th:text="${lesson.status}"></td>
+                <td th:text="${lesson.booked} + '/' + ${lesson.capacity}"></td>
                 <td>
                     <button type="button" class="btn btn-outline-primary" th:onclick="'reserveLesson(' + ${lesson.id} + ')'">예약</button>
                 </td>

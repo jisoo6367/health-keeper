@@ -23,7 +23,8 @@ public class LessonDTO {
     private String reservationDate; //예약날짜
     private String startTime; //수업 시작시간
     private String endTime; //수업 종료시간
-    private String status; //예약상태 (몇명 찼는지..? 완료 그런거)
+    private int booked; //예약상태 (몇명 찼는지..? 완료 그런거)
+    private int capacity; // 총 예약가능인원
 
 
     // Entity -> DTO
@@ -37,7 +38,8 @@ public class LessonDTO {
         lessonDTO.setReservationDate(lessonEntity.getReservationDate());
         lessonDTO.setStartTime(lessonEntity.getStartTime());
         lessonDTO.setEndTime(lessonEntity.getEndTime());
-        lessonDTO.setStatus(lessonEntity.getStatus());
+        lessonDTO.setBooked(lessonEntity.getBooked());
+        lessonDTO.setCapacity(lessonEntity.getCapacity());
 
         return lessonDTO;
     }
