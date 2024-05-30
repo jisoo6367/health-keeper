@@ -53,6 +53,7 @@ public class LessonEntity {
     @JoinColumn(name = "user_id") // DB에 만들어지는 컬럼 이름
     private UserEntity userEntity; // 반드시 부모 엔티티 타입으로 적어줘야함
 
-
+    @OneToMany(mappedBy = "lessonEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservationEntity> reservations = new ArrayList<>();
 
 }
