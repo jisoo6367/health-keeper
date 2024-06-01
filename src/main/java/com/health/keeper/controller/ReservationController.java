@@ -24,4 +24,11 @@ public class ReservationController {
     public List<ReservationEntity> getReservationsByUserId(@PathVariable Long userId) {
         return reservationService.getReservationsByUserId(userId);
     }
+
+    @GetMapping("/{id}")
+    public String reservation(@PathVariable("id") String id){
+        System.out.println("id = " + id);
+
+        return "lessonReservation";
+    }
 }

@@ -37,7 +37,9 @@
                 <td th:text="${lesson.instructorId}"></td>
                 <td th:text="${lesson.booked} + '/' + ${lesson.capacity}"></td>
                 <td>
-                    <button type="button" class="btn btn-outline-primary" th:onclick="'reserveLesson(' + ${lesson.id} + ')'">예약</button>
+<!--                    <button type="button" class="btn btn-outline-primary" th:onclick="'reserveLesson(' + ${lesson.id} + ')'">예약</button>-->
+                    <button type="button" class="btn btn-outline-primary"
+                            th:onclick="'location.href=\'/reservations/' + ${lesson.id} + '\''">예약</button>
                 </td>
             </tr>
             </tbody>
