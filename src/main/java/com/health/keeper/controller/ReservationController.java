@@ -2,14 +2,17 @@ package com.health.keeper.controller;
 
 import com.health.keeper.entity.ReservationEntity;
 import com.health.keeper.service.ReservationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController
+@RequiredArgsConstructor
 @RequestMapping("/reservations")
+@Controller
 public class ReservationController {
 
     @Autowired
@@ -26,9 +29,11 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    public String reservation(@PathVariable("id") String id){
+    public String reservation(@PathVariable("id") Long id){
         System.out.println("id = " + id);
-
+        List<ReservationEntity> result =
+        reservationService.getReservationsByUserId(id);
+        System.out.println("result : " + result);
         return "lessonReservation";
     }
 }
