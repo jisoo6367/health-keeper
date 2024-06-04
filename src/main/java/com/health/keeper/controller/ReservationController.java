@@ -2,6 +2,7 @@ package com.health.keeper.controller;
 
 import com.health.keeper.entity.ReservationEntity;
 import com.health.keeper.service.ReservationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,8 @@ public class ReservationController {
         return reservationService.getReservationsByUserId(userId);
     }
 
-    @GetMapping("/reser/{id}")
+    @Transactional
+    @GetMapping("/{id}")
     public String reservation(@PathVariable("id") Long id){
         System.out.println("id = " + id);
         List<ReservationEntity> result =

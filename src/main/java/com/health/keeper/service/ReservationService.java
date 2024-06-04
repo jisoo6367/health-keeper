@@ -48,7 +48,9 @@ public class ReservationService {
         }
     }
 
-    public List<ReservationEntity> getReservationsByUserId(Long userId) {
-        return reservationRepository.findByUserEntityId(userId);
+    public List<ReservationEntity> getReservationsByUserId(Long id) {
+
+        lessonRepository.updateBooked(id);
+        return reservationRepository.findByUserEntityId(id);
     }
 }
