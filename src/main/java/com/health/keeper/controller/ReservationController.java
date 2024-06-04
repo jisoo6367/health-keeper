@@ -28,7 +28,7 @@ public class ReservationController {
         return reservationService.getReservationsByUserId(userId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/reser/{id}")
     public String reservation(@PathVariable("id") Long id){
         System.out.println("id = " + id);
         List<ReservationEntity> result =
