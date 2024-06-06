@@ -50,7 +50,16 @@ public class ReservationService {
 
     public List<ReservationEntity> getReservationsByUserId(Long id) {
 
+        //lesson테이블에 booked컬럼 추가
         lessonRepository.updateBooked(id);
+
+        //reservation테이블에 한 행 삽입
+        //ReservationEntity reservationEntity = ReservationEntity.toSaveEntity(reservationDTO);
+        //reservationRepository.save(reservationEntity);
+
+        //1.ReservationDTO 만들기
+        //2.ReservationEntity에 DTO->엔티티 변환메서드만들기
+        //3. 예약하기누를때 정보 담아오기
         return reservationRepository.findByUserEntityId(id);
     }
 }
