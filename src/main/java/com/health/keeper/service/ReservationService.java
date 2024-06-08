@@ -26,7 +26,7 @@ public class ReservationService {
     private UserRepository userRepository;
 
     @Transactional
-    public boolean bookLesson(Long lessonId, Long userId, LocalDate reservationDate) {
+    public boolean bookLesson(Long lessonId, Long userId, String reservationDate) {
         LessonEntity lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new RuntimeException("Lesson not found"));
         UserEntity user = userRepository.findById(userId)

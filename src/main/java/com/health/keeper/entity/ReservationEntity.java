@@ -1,6 +1,7 @@
 package com.health.keeper.entity;
 
 import com.health.keeper.dto.BoardDTO;
+import com.health.keeper.dto.ReservationDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,10 +31,13 @@ public class ReservationEntity {
     private String reservationDate; // 예약 날짜
 
     // DTO -> Entity 변환작업
-//    public static ReservationEntity toSaveEntity(ReservationDTO boardDTO){
-//        BoardEntity boardEntity = new BoardEntity();
-//
-//        return boardEntity;
-//    }
+    public static ReservationEntity toSaveEntity(ReservationDTO reservationDTO){
+        ReservationEntity reservationEntity = new ReservationEntity();
+
+        reservationEntity.setId(reservationDTO.getId());
+        reservationEntity.setReservationDate(reservationDTO.getReservationDate());
+
+        return reservationEntity;
+    }
 
 }
