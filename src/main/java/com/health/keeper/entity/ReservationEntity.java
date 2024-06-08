@@ -27,7 +27,7 @@ public class ReservationEntity {
     private UserEntity userEntity;
 
     @Column
-    private LocalDate reservationDate; // 예약 날짜
+    private String reservationDate; // 예약 날짜
 
     // DTO -> Entity 변환작업
 //    public static ReservationEntity toSaveEntity(ReservationDTO boardDTO){
