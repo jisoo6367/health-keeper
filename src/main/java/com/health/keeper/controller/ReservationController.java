@@ -19,10 +19,10 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @PostMapping("/book")
-    public boolean bookLesson(@RequestParam Long lessonId, @RequestParam Long userId, @RequestParam LocalDate reservationDate) {
-        return reservationService.bookLesson(lessonId, userId, reservationDate);
-    }
+//    @PostMapping("/book")
+//    public boolean bookLesson(@RequestParam Long lessonId, @RequestParam Long userId, @RequestParam LocalDate reservationDate) {
+//        return reservationService.bookLesson(lessonId, userId, reservationDate);
+//    }
 
     @GetMapping("/user/{userId}")
     public List<ReservationEntity> getReservationsByUserId(@PathVariable Long userId) {
