@@ -37,10 +37,13 @@
                 <td th:text="${lesson.instructorId}"></td>
                 <td th:text="${lesson.booked} + '/' + ${lesson.capacity}"></td>
                 <td>
+<!--                    <button type="button" class="btn btn-outline-primary"-->
+<!--                            th:onclick="'location.href=\'/reservations/' + ${lesson.id} + '\''">예약</button>-->
+<!--                    <button type="button" class="btn btn-outline-primary"-->
+<!--                            th:onclick="reservationReq()">예약</button>-->
                     <button type="button" class="btn btn-outline-primary"
-                            th:onclick="'location.href=\'/reservations/' + ${lesson.id} + '\''">예약</button>
-                    <button type="button" class="btn btn-outline-primary"
-                            th:onclick="reservationReq()">예약</button>
+                            th:data-lesson-id="${lesson.id}"
+                            onclick="makeReservation(this)">예약</button>
                 </td>
             </tr>
             </tbody>
@@ -63,6 +66,12 @@
     function reservationReq() {
         console.log("예약 요청");
         location.href = "/reservations/" ;
+    }
+
+    function makeReservation(button) {
+        const lessonId = button.getAttribute('data-lesson-id');
+        console.log("예약 요청, lesson.id: " + lessonId);
+        location.href = "/reservations/" + lessonId;
     }
 
 
