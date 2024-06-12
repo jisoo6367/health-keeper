@@ -23,6 +23,7 @@ import java.util.List;
 public class LessonController {
 
     private final LessonService lessonService;
+    private final UserService userService;
 
     @GetMapping("/main")
     public String showLessonReservation () {
@@ -37,6 +38,7 @@ public class LessonController {
         //model.addAttribute("lesson", lessonDTOList);
 
         String username = principal.getName();
+        userService.findByUsername(principal);
         model.addAttribute("username", username);
 
         List<LessonDTO> lessons = lessonService.findById(reservationDate);
