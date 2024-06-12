@@ -36,6 +36,7 @@ public class ReservationController {
         List<ReservationEntity> result =
         reservationService.getReservationsByUserId(id);
         System.out.println("result : " + result);
+        //result : [com.health.keeper.entity.ReservationEntity@1833b721]
         return "lessonReservation";
     }
 }

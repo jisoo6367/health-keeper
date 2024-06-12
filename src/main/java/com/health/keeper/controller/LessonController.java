@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/lesson")
@@ -29,11 +30,14 @@ public class LessonController {
     }
 
     @GetMapping("/list/{selectedDate}")
-    public String findById (@PathVariable("selectedDate")String reservationDate, Model model) {
+    public String findById (@PathVariable("selectedDate")String reservationDate, Model model, Principal principal) {
 
 
         //List<LessonDTO> lessonDTOList = lessonService.findById(reservationDate);
         //model.addAttribute("lesson", lessonDTOList);
+
+        String username = principal.getName();
+        model.addAttribute("username", username);
 
         List<LessonDTO> lessons = lessonService.findById(reservationDate);
         List<LessonDTO> sortedLessons = LessonDTO.sortLessonsByTime(lessons);
